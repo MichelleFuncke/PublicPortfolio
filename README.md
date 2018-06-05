@@ -4,7 +4,7 @@ Welcome to my Portfolio project. This project will combine information from mult
 
 List of projects:
  - [Empiric Grimoire](Empiric%20Grimoire/README.md)
- - Plot-Purrfect
+ - [Plot-Purrfect](Plot-Purrfect/README.md)
  - SQL
  - Python
  - Masters Project
