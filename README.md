@@ -3,7 +3,7 @@
 Welcome to my Portfolio project. This project will combine information from multiple projects I have created:
 
 List of projects:
- - Empiric Grimoire
+ - [Empiric Grimoire](Empiric%20Grimoire/README.md)
  - Plot-Purrfect
  - SQL
  - Python
