@@ -43,7 +43,7 @@ This tool was later developed to manipulate Visual Studio and Mobile (IOS and An
 Original code unavailable as they are Derivco IP.
 
 ## SQL
-I created various SQL server scripts to help analyst and consolidate data. As the scripts were created for my previous employer, I can't share the scripts I created. However, the scripts made use of the following concepts:
+I created various SQL server scripts to help analyze and consolidate data. As the scripts were created for my previous employer, I can't share the scripts I created. However, the scripts made use of the following concepts:
 
  - Select statements
  - Insert statements
