@@ -7,7 +7,7 @@ List of projects:
  - [Plot-Purrfect](Plot-Purrfect/README.md)
  - [SQL](SQL%20scripts/README.md)
  - Python
- - Masters Project
+ - [Masters Project](Masters%20Project/README.md)
 
 ## Empiric Grimoire
 A C# desktop application I created for Derivco. This tool allowed an Empirical tester to easily connect to a database to check:
