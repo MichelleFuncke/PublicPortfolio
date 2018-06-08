@@ -8,14 +8,13 @@ namespace TicTacToe
 {
     public class Board
     {
-        private char[,] _grid;
+        private char[,] _grid = new char[3, 3];
         private char _marker = 'X';
 
         public char[,] Grid => _grid;
 
         public Board()
         {
-            Char[,] _grid = new char[3, 3];
             for (int i = 0; i < 3; i++)
             {
                 for (int k = 0; k < 3; k++)

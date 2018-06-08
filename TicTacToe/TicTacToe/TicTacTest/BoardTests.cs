@@ -7,8 +7,13 @@ namespace TicTacTest
     [TestFixture]
     public class BoardTests
     {
-        [TestCase(0,0)]
-        public void EmptyBoard_noError(int x, int y)
+        ///MethodName_StateUnderTest_ExpectedBehavior
+        ///https://dzone.com/articles/7-popular-unit-test-naming
+
+        [TestCase(0, 0)]
+        [TestCase(0, 1)]
+        [TestCase(2, 1)]
+        public void PlaceMarker_BoardAfterConstructor_MarkerAtXY(int x, int y)
         {
             //Arrange
             var actual = new Board();
