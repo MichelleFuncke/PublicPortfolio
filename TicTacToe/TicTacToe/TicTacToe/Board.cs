@@ -26,7 +26,7 @@ namespace TicTacToe
 
         public void PlaceMarker(int x, int y)
         {
-            if (((x < 3) || (y < 3)) && _grid[x,y] == 'B')
+            if ((x < 3) && (y < 3) && (_grid[x, y] == 'B'))
             {
                 _grid[x, y] = _marker;
                 _marker = (_marker == 'X') ? 'O' : 'X';
@@ -36,6 +36,15 @@ namespace TicTacToe
             }
 
             //We don't want this to trigger an error cause the user might have just clicked here.
+        }
+
+        public Boolean IsFreeSpace(int x, int y)
+        {
+            if ((x < 3) && (y < 3) && (_grid[x, y] == 'B'))
+            {
+                return true;
+            }
+            return false;
         }
     }
 }
