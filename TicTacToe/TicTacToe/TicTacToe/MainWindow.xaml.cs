@@ -24,14 +24,7 @@ namespace TicTacToe
         {
             InitializeComponent();
 
-            Char[,] board = new char[3,3];
-            for (int i = 0; i < 3; i++)
-            {
-                for (int k = 0; k < 3; k++)
-                {
-                    board[i, k] = 'B';
-                }
-            } 
+            var theBoard = new Board();
         }
     }
 }
