@@ -57,5 +57,21 @@ namespace TicTacTest
             //Act\Assert
             Assert.AreEqual(expected, actual.IsFreeSpace(x, y));
         }
+
+        [TestCase(1, 0, 2)]
+        [TestCase(0, 0, 3)]
+        [TestCase(2, 1, 2)]
+        [TestCase(1, 1, 4)]
+        [TestCase(0, 2, 3)]
+        public void GetLines_BoardBlank_ExpectedCount(int x, int y, int expected)
+        {
+            //Arrange
+            var Theboard = new Board();
+
+            //Act
+            var actual = Theboard.GetLines(x, y);
+            //Assert
+            Assert.AreEqual(expected, actual.Count);
+        }
     }
 }

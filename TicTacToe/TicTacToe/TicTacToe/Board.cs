@@ -46,5 +46,49 @@ namespace TicTacToe
             }
             return false;
         }
+
+        public List<Line> GetLines(int x, int y)
+        {
+            var theList = new List<Line>();
+            if ((x > 2) || (y > 2))
+            {
+                return theList;
+            }
+
+            //The row win
+            theList.Add(new Line(x, 0, x, 2));
+
+            //The column win
+            theList.Add(new Line(0, y, 2, y));
+
+            //The diagonal wins
+            if (x == y)
+            {
+                theList.Add(new Line(0, 0, 2, 2));
+            }
+
+            if ((x == 0 & y == 2) || (x == 2 & y == 0) || (x == 1 & y == 1))
+            {
+                theList.Add(new Line(0, 2, 2, 0));
+            }
+
+            return theList;
+        }
+    }
+
+    public class Line
+    {
+        public int StartX { get; set; }
+        public int StartY { get; set; }
+        public int EndX { get; set; }
+        public int EndY { get; set; }
+
+        public Line(int startX, int startY, int endX, int endY)
+        {
+            StartX = startX;
+            StartY = startY;
+            EndX = endX;
+            EndY = endY;
+        }
     }
 }
