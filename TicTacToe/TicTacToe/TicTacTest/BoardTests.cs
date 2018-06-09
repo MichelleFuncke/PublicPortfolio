@@ -75,6 +75,26 @@ namespace TicTacTest
             //Assert
             Assert.AreEqual(expected, actual.Count);
         }
+
+        [TestCase(1, 0)]
+        [TestCase(0, 0)]
+        [TestCase(2, 1)]
+        [TestCase(1, 1)]
+        [TestCase(0, 2)]
+        public void GetLines_BoardBlank_PointIsOnLines(int x, int y)
+        {
+            //Arrange
+            var Theboard = new Board();
+
+            //Act
+            var actual = Theboard.GetLines(x, y);
+
+            //Assert
+            foreach (Line item in actual)
+            {
+                Assert.IsTrue(item.IsOnLine(x, y));
+            }
+        }
         #endregion
 
         #region Line class
