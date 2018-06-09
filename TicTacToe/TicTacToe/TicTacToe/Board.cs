@@ -31,10 +31,11 @@ namespace TicTacToe
                 _grid[x, y] = _marker;
                 _marker = (_marker == 'X') ? 'O' : 'X';
 
-                //Check if that was a winning move
-                //If it is trigger the win drawing event
+                if (this.IsWinningMove(x, y))
+                {
+                    //If it is trigger the win drawing event
+                }
             }
-
             //We don't want this to trigger an error cause the user might have just clicked here.
         }
 
@@ -74,37 +75,50 @@ namespace TicTacToe
 
             return theList;
         }
+
+        public Boolean IsWinningMove(int x, int y)
+        {
+            var theMarker = _grid[x, y];
+            foreach (Line item in this.GetLines(x, y))
+            {
+                var winner = true;
+                foreach (Point xy in item.PointsList)
+                {
+                    winner = (_grid[xy.Xaxis, xy.Yaxis] == theMarker) & winner;
+                }
+
+                if (winner)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 
     public class Line
     {
-        public Point StartPoint { get; set; }
-        public Point EndPoint { get; set; }
-        public Point MidPoint { get; set; }
+        public List<Point> PointsList = new List<Point>();
 
         public Line(int startX, int startY, int endX, int endY)
         {
-            StartPoint = new Point(startX, startY);
-            EndPoint = new Point(endX, endY);
+            PointsList.Add(new Point(startX, startY));   
 
             int midX = (startX + endX) / 2;
             int midY = (startY + endY) / 2;
-            MidPoint = new Point(midX, midY);
+            PointsList.Add(new Point(midX, midY));
+
+            PointsList.Add(new Point(endX, endY));
         }
 
         public Boolean IsOnLine(int x, int y)
         {
-            if (StartPoint.Xaxis == x && StartPoint.Yaxis == y)
+            foreach (Point item in PointsList)
             {
-                return true;
-            }
-            else if(EndPoint.Xaxis == x && EndPoint.Yaxis == y)
-            {
-                return true;
-            }
-            else if (MidPoint.Xaxis == x && MidPoint.Yaxis == y)
-            {
-                return true;
+                if (item.Xaxis == x && item.Yaxis == y)
+                {
+                    return true;
+                }
             }
 
             return false;
