@@ -107,8 +107,8 @@ namespace TicTacTest
             var actual = new Line(startx, starty, endx, endy);
 
             //Assert
-            Assert.AreEqual(startx, actual.StartX);
-            Assert.AreEqual(starty, actual.StartY);
+            Assert.AreEqual(startx, actual.StartPoint.Xaxis);
+            Assert.AreEqual(starty, actual.StartPoint.Yaxis);
         }
 
         [TestCase(0, 0, 2, 2)]
@@ -120,8 +120,8 @@ namespace TicTacTest
             var actual = new Line(startx, starty, endx, endy);
 
             //Assert
-            Assert.AreEqual(endx, actual.EndX);
-            Assert.AreEqual(endy, actual.EndY);
+            Assert.AreEqual(endx, actual.EndPoint.Xaxis);
+            Assert.AreEqual(endy, actual.EndPoint.Yaxis);
         }
 
         [TestCase(0, 0, 2, 2, 1, 1)]
@@ -133,8 +133,8 @@ namespace TicTacTest
             var actual = new Line(startx, starty, endx, endy);
 
             //Assert
-            Assert.AreEqual(expectedX, actual.MidX);
-            Assert.AreEqual(expectedY, actual.MidY);
+            Assert.AreEqual(expectedX, actual.MidPoint.Xaxis);
+            Assert.AreEqual(expectedY, actual.MidPoint.Yaxis);
         }
 
         [TestCase(0, 0, false)]

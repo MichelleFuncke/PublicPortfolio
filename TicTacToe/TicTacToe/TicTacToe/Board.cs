@@ -78,51 +78,48 @@ namespace TicTacToe
 
     public class Line
     {
-        public int StartX { get; set; }
-        public int StartY { get; set; }
-        public int EndX { get; set; }
-        public int EndY { get; set; }
-
-        public int MidX
-        {
-            get
-            {
-                return (StartX + EndX) / 2;
-            }
-        }
-
-        public int MidY
-        {
-            get
-            {
-                return (StartY + EndY) / 2;
-            }
-        }
+        public Point StartPoint { get; set; }
+        public Point EndPoint { get; set; }
+        public Point MidPoint { get; set; }
 
         public Line(int startX, int startY, int endX, int endY)
         {
-            StartX = startX;
-            StartY = startY;
-            EndX = endX;
-            EndY = endY;
+            StartPoint = new Point(startX, startY);
+            EndPoint = new Point(endX, endY);
+
+            int midX = (startX + endX) / 2;
+            int midY = (startY + endY) / 2;
+            MidPoint = new Point(midX, midY);
         }
 
         public Boolean IsOnLine(int x, int y)
         {
-            if (StartX == x && StartY == y)
+            if (StartPoint.Xaxis == x && StartPoint.Yaxis == y)
             {
                 return true;
             }
-            else if(EndX == x && EndY == y)
+            else if(EndPoint.Xaxis == x && EndPoint.Yaxis == y)
             {
                 return true;
             }
-            else if (MidX == x && MidY == y)
+            else if (MidPoint.Xaxis == x && MidPoint.Yaxis == y)
             {
                 return true;
             }
 
             return false;
+        }
+    }
+
+    public class Point
+    {
+        public int Xaxis { get; set; }
+        public int Yaxis { get; set; }
+
+        public Point(int x, int y)
+        {
+            Xaxis = x;
+            Yaxis = y;
         }
     }
 }
