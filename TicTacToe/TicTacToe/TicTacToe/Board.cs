@@ -83,12 +83,46 @@ namespace TicTacToe
         public int EndX { get; set; }
         public int EndY { get; set; }
 
+        public int MidX
+        {
+            get
+            {
+                return (StartX + EndX) / 2;
+            }
+        }
+
+        public int MidY
+        {
+            get
+            {
+                return (StartY + EndY) / 2;
+            }
+        }
+
         public Line(int startX, int startY, int endX, int endY)
         {
             StartX = startX;
             StartY = startY;
             EndX = endX;
             EndY = endY;
+        }
+
+        public Boolean IsOnLine(int x, int y)
+        {
+            if (StartX == x && StartY == y)
+            {
+                return true;
+            }
+            else if(EndX == x && EndY == y)
+            {
+                return true;
+            }
+            else if (MidX == x && MidY == y)
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }
