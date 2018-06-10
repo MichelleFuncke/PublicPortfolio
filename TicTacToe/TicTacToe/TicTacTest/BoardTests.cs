@@ -133,6 +133,76 @@ namespace TicTacTest
             //Assert
             Assert.AreEqual(expected, actualTest);
         }
+
+        [TestCase(0, 0)]
+        public void GetWinningLine_BoardInWinningState_FirstVertical(int x, int y)
+        {
+            //Arrange
+            var actual = new Board();
+            actual.PlaceMarker(2, 0); // X
+            actual.PlaceMarker(1, 1); // O
+            actual.PlaceMarker(1, 0); // X
+            actual.PlaceMarker(0, 1); // O
+            actual.PlaceMarker(2, 1); // X
+            actual.PlaceMarker(0, 2); // O
+            actual.PlaceMarker(x, y);
+            var expectedLine = new Line(0, 0, 2, 0);
+
+            //Act
+            var actualTest = actual.GetWinningLine(x, y);
+
+            //Assert
+            for (int i = 0; i < expectedLine.PointsList.Count; i++)
+            {
+                Assert.AreEqual(expectedLine.PointsList[i].Xaxis, actualTest.PointsList[i].Xaxis);
+                Assert.AreEqual(expectedLine.PointsList[i].Yaxis, actualTest.PointsList[i].Yaxis);
+            }
+        }
+
+        [TestCase(2, 2)]
+        public void GetWinningLine_BoardInWinningState_LastHorizontal(int x, int y)
+        {
+            //Arrange
+            var actual = new Board();
+            actual.PlaceMarker(2, 0); // X
+            actual.PlaceMarker(1, 1); // O
+            actual.PlaceMarker(1, 0); // X
+            actual.PlaceMarker(0, 1); // O
+            actual.PlaceMarker(2, 1); // X
+            actual.PlaceMarker(0, 2); // O
+            actual.PlaceMarker(x, y);
+            var expectedLine = new Line(2, 0, 2, 2);
+
+            //Act
+            var actualTest = actual.GetWinningLine(x, y);
+
+            //Assert
+            for (int i = 0; i < expectedLine.PointsList.Count; i++)
+            {
+                Assert.AreEqual(expectedLine.PointsList[i].Xaxis, actualTest.PointsList[i].Xaxis);
+                Assert.AreEqual(expectedLine.PointsList[i].Yaxis, actualTest.PointsList[i].Yaxis);
+            }
+        }
+
+        [TestCase(1, 2)]
+        public void GetWinningLine_BoardInWinningState_Null(int x, int y)
+        {
+            //Arrange
+            var actual = new Board();
+            actual.PlaceMarker(2, 0); // X
+            actual.PlaceMarker(1, 1); // O
+            actual.PlaceMarker(1, 0); // X
+            actual.PlaceMarker(0, 1); // O
+            actual.PlaceMarker(2, 1); // X
+            actual.PlaceMarker(0, 2); // O
+            actual.PlaceMarker(x, y);
+
+            //Act
+            var actualTest = actual.GetWinningLine(x, y);
+
+            //Assert
+            Assert.AreEqual(null, actualTest);
+        }
         #endregion
 
         #region Line class

@@ -101,6 +101,25 @@ namespace TicTacToe
             }
             return false;
         }
+
+        public Line GetWinningLine(int x, int y)
+        {
+            var theMarker = _grid[x, y];
+            foreach (Line item in this.GetLines(x, y))
+            {
+                var winner = true;
+                foreach (Point xy in item.PointsList)
+                {
+                    winner = (_grid[xy.Xaxis, xy.Yaxis] == theMarker) & winner;
+                }
+
+                if (winner)
+                {
+                    return item;
+                }
+            }
+            return null;
+        }
     }
 
     public class Line
