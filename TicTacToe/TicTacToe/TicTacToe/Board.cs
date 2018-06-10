@@ -6,12 +6,19 @@ using System.Threading.Tasks;
 
 namespace TicTacToe
 {
+    public enum Marker
+    {
+        Blank,
+        Cross,
+        Nought
+    }
+
     public class Board
     {
-        private char[,] _grid = new char[3, 3];
-        private char _marker = 'X';
+        private Marker[,] _grid = new Marker[3, 3];
+        private Marker _marker = Marker.Cross;
 
-        public char[,] Grid => _grid;
+        public Marker[,] Grid => _grid;
 
         public Board()
         {
@@ -19,17 +26,17 @@ namespace TicTacToe
             {
                 for (int k = 0; k < 3; k++)
                 {
-                    _grid[i, k] = 'B';
+                    _grid[i, k] = Marker.Blank;
                 }
             }
         }
 
         public void PlaceMarker(int x, int y)
         {
-            if ((x < 3) && (y < 3) && (_grid[x, y] == 'B'))
+            if ((x < 3) && (y < 3) && (_grid[x, y] == Marker.Blank))
             {
                 _grid[x, y] = _marker;
-                _marker = (_marker == 'X') ? 'O' : 'X';
+                _marker = (_marker == Marker.Cross) ? Marker.Nought : Marker.Cross;
 
                 if (this.IsWinningMove(x, y))
                 {
@@ -41,7 +48,7 @@ namespace TicTacToe
 
         public Boolean IsFreeSpace(int x, int y)
         {
-            if ((x < 3) && (y < 3) && (_grid[x, y] == 'B'))
+            if ((x < 3) && (y < 3) && (_grid[x, y] == Marker.Blank))
             {
                 return true;
             }
