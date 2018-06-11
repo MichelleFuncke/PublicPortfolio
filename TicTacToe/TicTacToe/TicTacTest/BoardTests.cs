@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using System;
 using TicTacToe;
+using System.Windows;
 
 namespace TicTacTest
 {
@@ -154,8 +155,8 @@ namespace TicTacTest
             //Assert
             for (int i = 0; i < expectedLine.PointsList.Count; i++)
             {
-                Assert.AreEqual(expectedLine.PointsList[i].Xaxis, actualTest.PointsList[i].Xaxis);
-                Assert.AreEqual(expectedLine.PointsList[i].Yaxis, actualTest.PointsList[i].Yaxis);
+                Assert.AreEqual(expectedLine.PointsList[i].X, actualTest.PointsList[i].X);
+                Assert.AreEqual(expectedLine.PointsList[i].Y, actualTest.PointsList[i].Y);
             }
         }
 
@@ -179,8 +180,8 @@ namespace TicTacTest
             //Assert
             for (int i = 0; i < expectedLine.PointsList.Count; i++)
             {
-                Assert.AreEqual(expectedLine.PointsList[i].Xaxis, actualTest.PointsList[i].Xaxis);
-                Assert.AreEqual(expectedLine.PointsList[i].Yaxis, actualTest.PointsList[i].Yaxis);
+                Assert.AreEqual(expectedLine.PointsList[i].X, actualTest.PointsList[i].X);
+                Assert.AreEqual(expectedLine.PointsList[i].Y, actualTest.PointsList[i].Y);
             }
         }
 
@@ -215,8 +216,8 @@ namespace TicTacTest
             var actual = new Line(startx, starty, endx, endy);
 
             //Assert
-            Assert.AreEqual(startx, actual.PointsList[0].Xaxis);
-            Assert.AreEqual(starty, actual.PointsList[0].Yaxis);
+            Assert.AreEqual(startx, actual.PointsList[0].X);
+            Assert.AreEqual(starty, actual.PointsList[0].Y);
         }
 
         [TestCase(0, 0, 2, 2)]
@@ -228,8 +229,8 @@ namespace TicTacTest
             var actual = new Line(startx, starty, endx, endy);
 
             //Assert
-            Assert.AreEqual(endx, actual.PointsList[2].Xaxis);
-            Assert.AreEqual(endy, actual.PointsList[2].Yaxis);
+            Assert.AreEqual(endx, actual.PointsList[2].X);
+            Assert.AreEqual(endy, actual.PointsList[2].Y);
         }
 
         [TestCase(0, 0, 2, 2, 1, 1)]
@@ -241,8 +242,8 @@ namespace TicTacTest
             var actual = new Line(startx, starty, endx, endy);
 
             //Assert
-            Assert.AreEqual(expectedX, actual.PointsList[1].Xaxis);
-            Assert.AreEqual(expectedY, actual.PointsList[1].Yaxis);
+            Assert.AreEqual(expectedX, actual.PointsList[1].X);
+            Assert.AreEqual(expectedY, actual.PointsList[1].Y);
         }
 
         [TestCase(0, 0, false)]

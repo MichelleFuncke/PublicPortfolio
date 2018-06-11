@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace TicTacToe
 {
@@ -13,14 +14,17 @@ namespace TicTacToe
         Nought
     }
 
+    public delegate void TriggerWin(Line winningLine);
+
     public class Board
     {
         private Marker[,] _grid = new Marker[3, 3];
         private Marker _marker = Marker.Cross;
+        private TriggerWin _winAction = null;
 
-        public Marker[,] Grid => _grid;
+        public Marker[,] Grid => _grid;     
 
-        public Board()
+        public Board(TriggerWin del = null)
         {
             for (int i = 0; i < 3; i++)
             {
@@ -29,6 +33,8 @@ namespace TicTacToe
                     _grid[i, k] = Marker.Blank;
                 }
             }
+
+            _winAction = del;
         }
 
         public void PlaceMarker(int x, int y)
@@ -41,6 +47,8 @@ namespace TicTacToe
                 if (this.IsWinningMove(x, y))
                 {
                     //If it is trigger the win drawing event
+                    var winningLine = GetWinningLine(x, y);
+                    _winAction?.Invoke(winningLine);
                 }
             }
             //We don't want this to trigger an error cause the user might have just clicked here.
@@ -91,7 +99,7 @@ namespace TicTacToe
                 var winner = true;
                 foreach (Point xy in item.PointsList)
                 {
-                    winner = (_grid[xy.Xaxis, xy.Yaxis] == theMarker) & winner;
+                    winner = (_grid[(int)xy.X, (int)xy.Y] == theMarker) & winner;
                 }
 
                 if (winner)
@@ -110,7 +118,7 @@ namespace TicTacToe
                 var winner = true;
                 foreach (Point xy in item.PointsList)
                 {
-                    winner = (_grid[xy.Xaxis, xy.Yaxis] == theMarker) & winner;
+                    winner = (_grid[(int)xy.X, (int)xy.Y] == theMarker) & winner;
                 }
 
                 if (winner)
@@ -141,25 +149,12 @@ namespace TicTacToe
         {
             foreach (Point item in PointsList)
             {
-                if (item.Xaxis == x && item.Yaxis == y)
+                if (item.X == x && item.Y == y)
                 {
                     return true;
                 }
             }
-
             return false;
-        }
-    }
-
-    public class Point
-    {
-        public int Xaxis { get; set; }
-        public int Yaxis { get; set; }
-
-        public Point(int x, int y)
-        {
-            Xaxis = x;
-            Yaxis = y;
         }
     }
 }
