@@ -34,6 +34,21 @@ namespace TicTacToe
             return theImage;
         }
 
+        public void TriggerWin(Line theLine)
+        {
+            var drawingLine = new System.Windows.Shapes.Line();
+            drawingLine.Stroke = System.Windows.Media.Brushes.LightSteelBlue;
+            drawingLine.X1 = 0;
+            drawingLine.Y1 = 0;
+            drawingLine.X2 = 100;
+            drawingLine.Y2 = 100;
+            drawingLine.HorizontalAlignment = HorizontalAlignment.Left;
+            drawingLine.VerticalAlignment = VerticalAlignment.Center;
+            drawingLine.StrokeThickness = 2;
+
+            thegrid.Children.Add(drawingLine);
+        }
+
         public MainWindow()
         {
             InitializeComponent();

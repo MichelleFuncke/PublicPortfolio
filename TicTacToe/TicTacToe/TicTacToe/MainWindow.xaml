@@ -20,5 +20,6 @@
         <Button x:Name="btn_bottomleft" HorizontalAlignment="Left" Margin="47,293,0,0" VerticalAlignment="Top" Width="95" Height="95" Click="btn_bottomleft_Click"/>
         <Button x:Name="btn_bottomcentre" HorizontalAlignment="Left" Margin="173,293,0,0" VerticalAlignment="Top" Width="95" Height="95" Click="btn_bottomcentre_Click"/>
         <Button x:Name="btn_bottomright" HorizontalAlignment="Left" Margin="303,293,0,0" VerticalAlignment="Top" Width="95" Height="95"  Click="btn_bottomright_Click"/>
+        <Canvas x:Name="thegrid" HorizontalAlignment="Left" Height="350" Margin="47,38,0,0" VerticalAlignment="Top" Width="350"/>
     </Grid>
 </Window>
