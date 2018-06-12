@@ -9,17 +9,24 @@
     <Grid>
         <Image HorizontalAlignment="Center" VerticalAlignment="Center" Height="421" Width="421" Margin="0,0,0,0" Source="Pictures/Board.png"/>
 
-        <Button x:Name="btn_topleft" HorizontalAlignment="Left" Margin="47,38,0,0" VerticalAlignment="Top" Width="95" Height="95" Click="btn_topleft_Click"/>
-        <Button x:Name="btn_topcentre" HorizontalAlignment="Left" Margin="173,38,0,0" VerticalAlignment="Top" Width="95" Height="95" Click="btn_topcentre_Click"/>
-        <Button x:Name="btn_topright" HorizontalAlignment="Left" Margin="302,38,0,0" VerticalAlignment="Top" Width="95" Height="95" Click="btn_topright_Click"/>
-
-        <Button x:Name="btn_left" HorizontalAlignment="Left" Margin="47,166,0,0" VerticalAlignment="Top" Width="95" Height="95" Click="btn_left_Click"/>
-        <Button x:Name="btn_centre" HorizontalAlignment="Left" Margin="173,166,0,0" VerticalAlignment="Top" Width="95" Height="95" Click="btn_centre_Click"/>
-        <Button x:Name="btn_right" HorizontalAlignment="Left" Margin="303,166,0,0" VerticalAlignment="Top" Width="95" Height="95" Click="btn_right_Click"/>
-
-        <Button x:Name="btn_bottomleft" HorizontalAlignment="Left" Margin="47,293,0,0" VerticalAlignment="Top" Width="95" Height="95" Click="btn_bottomleft_Click"/>
-        <Button x:Name="btn_bottomcentre" HorizontalAlignment="Left" Margin="173,293,0,0" VerticalAlignment="Top" Width="95" Height="95" Click="btn_bottomcentre_Click"/>
-        <Button x:Name="btn_bottomright" HorizontalAlignment="Left" Margin="303,293,0,0" VerticalAlignment="Top" Width="95" Height="95"  Click="btn_bottomright_Click"/>
+        <StackPanel Margin="0,4,0,0">
+            <StackPanel VerticalAlignment="Top" HorizontalAlignment="Center" Orientation="Horizontal" Height="95" Margin="0,32,0,0">
+                <Button x:Name="btn_topleft" Width="95" Height="95" Click="btn_topleft_Click" Margin="0,0,32,0"/>
+                <Button x:Name="btn_topcentre" Width="95" Height="95" Click="btn_topcentre_Click" Margin="0,0,32,0"/>
+                <Button x:Name="btn_topright" Width="95" Height="95" Click="btn_topright_Click"/>
+            </StackPanel>
+            <StackPanel VerticalAlignment="Top" HorizontalAlignment="Center" Orientation="Horizontal" Height="95" Margin="0,32,0,0">
+                <Button x:Name="btn_left" Width="95" Height="95" Click="btn_left_Click" Margin="0,0,32,0"/>
+                <Button x:Name="btn_centre" Width="95" Height="95" Click="btn_centre_Click" Margin="0,0,32,0"/>
+                <Button x:Name="btn_right" Width="95" Height="95" Click="btn_right_Click"/>
+            </StackPanel>
+            <StackPanel VerticalAlignment="Top" HorizontalAlignment="Center" Orientation="Horizontal" Height="95" Margin="0,32,0,0">
+                <Button x:Name="btn_bottomleft" Width="95" Height="95" Click="btn_bottomleft_Click" Margin="0,0,32,0"/>
+                <Button x:Name="btn_bottomcentre" Width="95" Height="95" Click="btn_bottomcentre_Click" Margin="0,0,32,0"/>
+                <Button x:Name="btn_bottomright" Width="95" Height="95" Click="btn_bottomright_Click"/>
+            </StackPanel>
+        </StackPanel>
         <Canvas x:Name="thegrid" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label x:Name="lbl_message" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Goudy Stout" FontSize="1" Foreground="Orange" FontWeight="Bold"/>
     </Grid>
 </Window>
