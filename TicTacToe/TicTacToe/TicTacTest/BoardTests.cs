@@ -24,7 +24,7 @@ namespace TicTacTest
             actual.PlaceMarker(x, y);
 
             //Assert
-            Assert.AreEqual(Marker.Cross, actual.Grid[x,y]);
+            Assert.AreEqual(Marker.Cross, actual.theGrid[y][x]);
         }
 
         [TestCase(1, 0)]
@@ -41,7 +41,7 @@ namespace TicTacTest
             actual.PlaceMarker(x, y);
 
             //Assert
-            Assert.AreEqual(Marker.Cross, actual.Grid[x, y]);
+            Assert.AreEqual(Marker.Cross, actual.theGrid[y][x]);
         }
 
         [TestCase(1, 0, true)]
