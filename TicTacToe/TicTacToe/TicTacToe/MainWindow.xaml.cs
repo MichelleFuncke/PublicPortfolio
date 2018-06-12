@@ -16,13 +16,39 @@ using System.Windows.Shapes;
 
 namespace TicTacToe
 {
+    #region The converter for the buttons control
+    public class MyConvertor : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            //How to convert string to int?
+            string temp = value.ToString();
+
+            Image theImage = new Image()
+            {
+                HorizontalAlignment = System.Windows.HorizontalAlignment.Center,
+                VerticalAlignment = System.Windows.VerticalAlignment.Center,
+                Source = new BitmapImage(new Uri("pack://application:,,,/Pictures/" + temp + ".png")),
+            };
+            return theImage;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+    #endregion
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
         public Board theBoard;
-        
+        public Marker[][] grid = new Marker[][] { new Marker[] { Marker.Cross } };
+
+
         public Image ConvertMarker(Marker marker)
         {
             Image theImage = new Image()
@@ -88,6 +114,13 @@ namespace TicTacToe
             InitializeComponent();
 
             theBoard = new Board(TriggerWin, TriggerDraw);
+            //grid[0] = new[] { Marker.Cross, Marker.Cross, Marker.Cross };
+            //grid[1] = new[] { Marker.Cross, Marker.Cross, Marker.Cross };
+            //grid[2] = new[] { Marker.Cross, Marker.Cross, Marker.Cross };
+            grid[0][0] = Marker.Cross;
+            Main.DataContext = grid;
+            grid[0][0] = Marker.Nought;
+
             //WinningState();
         }
 
