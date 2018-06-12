@@ -61,6 +61,12 @@ namespace TicTacToe
             lbl_message.FontSize = 48;
         }
 
+        public void TriggerDraw(Line theLine)
+        {
+            lbl_message.Content = "Draw";
+            lbl_message.FontSize = 48;
+        }
+
         public void WinningState()
         {
             theBoard.PlaceMarker(2, 0); // X
@@ -81,7 +87,7 @@ namespace TicTacToe
         {
             InitializeComponent();
 
-            theBoard = new Board(TriggerWin);
+            theBoard = new Board(TriggerWin, TriggerDraw);
             //WinningState();
         }
 

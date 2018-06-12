@@ -14,17 +14,19 @@ namespace TicTacToe
         Nought
     }
 
-    public delegate void TriggerWin(Line winningLine);
+    public delegate void TriggerEnd(Line winningLine);
 
     public class Board
     {
         private Marker[,] _grid = new Marker[3, 3];
         private Marker _marker = Marker.Cross;
-        private TriggerWin _winAction = null;
+        private TriggerEnd _winAction = null;
+        private TriggerEnd _drawTrue = null;
+        private int _numMoves = 0;
 
         public Marker[,] Grid => _grid;     
 
-        public Board(TriggerWin del = null)
+        public Board(TriggerEnd winTrue = null, TriggerEnd drawTrue = null)
         {
             for (int i = 0; i < 3; i++)
             {
@@ -34,7 +36,8 @@ namespace TicTacToe
                 }
             }
 
-            _winAction = del;
+            _winAction = winTrue;
+            _drawTrue = drawTrue;
         }
 
         public void PlaceMarker(int x, int y)
@@ -43,12 +46,18 @@ namespace TicTacToe
             {
                 _grid[x, y] = _marker;
                 _marker = (_marker == Marker.Cross) ? Marker.Nought : Marker.Cross;
+                _numMoves += 1;
 
                 if (this.IsWinningMove(x, y))
                 {
                     //If it is trigger the win drawing event
                     var winningLine = GetWinningLine(x, y);
                     _winAction?.Invoke(winningLine);
+                }
+
+                if (_numMoves == 9) //The board is full
+                {
+                    _drawTrue?.Invoke(null);
                 }
             }
             //We don't want this to trigger an error cause the user might have just clicked here.
