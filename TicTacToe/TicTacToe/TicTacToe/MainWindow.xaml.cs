@@ -150,5 +150,20 @@ namespace TicTacToe
             btn_bottomright.Content = ConvertMarker(theBoard.Grid[2, 2]);
         }
         #endregion
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.Key)
+            {
+                case Key.Clear:
+                    theBoard = new Board(TriggerWin, TriggerDraw);
+                    break;
+                case Key.F5:
+                    theBoard = new Board(TriggerWin, TriggerDraw);
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }
