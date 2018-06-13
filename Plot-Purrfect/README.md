@@ -1,4 +1,12 @@
 # Plot-Purrfect
+
+|Attribute|Value  |
+|--|--|
+|Language  |C#, SQL |
+|UI Type|WPF  |
+|Architecture|pseudo-MVVM, TDD |
+|Time|1 year part-time [2 hours per day max]|
+
 A C# desktop application I created for Derivco. This tool allowed users to format raw Perfmon (Performance Monitor) data into and Excel file. This tool:
  - Converted from bytes to Mbytes
  - Reformatted Headers
