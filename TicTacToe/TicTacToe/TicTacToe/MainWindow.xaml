@@ -31,6 +31,6 @@
         </StackPanel>
         
         <Canvas x:Name="thegrid" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <Label x:Name="lbl_message" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Goudy Stout" FontSize="1" Foreground="Orange" FontWeight="Bold"/>
+        <Label x:Name="lbl_message" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Goudy Stout" FontSize="1" Foreground="White" FontWeight="Bold" Background="{x:Null}"/>
     </Grid>
 </Window>

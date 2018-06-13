@@ -80,6 +80,8 @@ namespace TicTacToe
 
             lbl_message.Content = "WINNER";
             lbl_message.FontSize = 48;
+            lbl_message.Background = new LinearGradientBrush(Colors.Blue, Colors.Navy, 90);
+            lbl_message.Opacity = 0.8;
 
             sp_BoardGrid.IsEnabled = false;
         }
@@ -88,6 +90,8 @@ namespace TicTacToe
         {
             lbl_message.Content = "Draw";
             lbl_message.FontSize = 48;
+            lbl_message.Background = new LinearGradientBrush(Colors.Blue, Colors.Navy, 90);
+            lbl_message.Opacity = 0.8;
 
             sp_BoardGrid.IsEnabled = false;
         }
@@ -96,6 +100,7 @@ namespace TicTacToe
         {
             lbl_message.Content = "";
             lbl_message.FontSize = 1;
+            lbl_message.Background = null;
             thegrid.Children.Clear();
             sp_BoardGrid.IsEnabled = true;
         }
