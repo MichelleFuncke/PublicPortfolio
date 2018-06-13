@@ -5,27 +5,31 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TicTacToe"
         mc:Ignorable="d"
-        Title="Tic Tac Toe" Height="450" Width="450">
+        Title="Tic Tac Toe" Name="Main" Height="450" Width="450" KeyDown="Window_KeyDown">
+    <Window.Resources>
+        <local:MyConvertor x:Key="imageconverter" />
+    </Window.Resources>
     <Grid>
         <Image HorizontalAlignment="Center" VerticalAlignment="Center" Height="421" Width="421" Margin="0,0,0,0" Source="Pictures/Board.png"/>
 
-        <StackPanel Margin="0,4,0,0">
+        <StackPanel Name="sp_BoardGrid" Margin="0,4,0,0">
             <StackPanel VerticalAlignment="Top" HorizontalAlignment="Center" Orientation="Horizontal" Height="95" Margin="0,32,0,0">
-                <Button x:Name="btn_topleft" Width="95" Height="95" Click="btn_topleft_Click" Margin="0,0,32,0"/>
-                <Button x:Name="btn_topcentre" Width="95" Height="95" Click="btn_topcentre_Click" Margin="0,0,32,0"/>
-                <Button x:Name="btn_topright" Width="95" Height="95" Click="btn_topright_Click"/>
+                <Button x:Name="btn_topleft" Width="95" Height="95" Click="btn_topleft_Click" Margin="0,0,32,0" Content="{Binding Path=.[0][0], Converter={StaticResource imageconverter}}"/>
+                <Button x:Name="btn_topcentre" Width="95" Height="95" Click="btn_topcentre_Click" Margin="0,0,32,0" Content="{Binding Path=.[1][0], Converter={StaticResource imageconverter}}"/>
+                <Button x:Name="btn_topright" Width="95" Height="95" Click="btn_topright_Click" Content="{Binding Path=.[2][0], Converter={StaticResource imageconverter}}"/>
             </StackPanel>
             <StackPanel VerticalAlignment="Top" HorizontalAlignment="Center" Orientation="Horizontal" Height="95" Margin="0,32,0,0">
-                <Button x:Name="btn_left" Width="95" Height="95" Click="btn_left_Click" Margin="0,0,32,0"/>
-                <Button x:Name="btn_centre" Width="95" Height="95" Click="btn_centre_Click" Margin="0,0,32,0"/>
-                <Button x:Name="btn_right" Width="95" Height="95" Click="btn_right_Click"/>
+                <Button x:Name="btn_left" Width="95" Height="95" Click="btn_left_Click" Margin="0,0,32,0" Content="{Binding Path=.[0][1], Converter={StaticResource imageconverter}}"/>
+                <Button x:Name="btn_centre" Width="95" Height="95" Click="btn_centre_Click" Margin="0,0,32,0" Content="{Binding Path=.[1][1], Converter={StaticResource imageconverter}}"/>
+                <Button x:Name="btn_right" Width="95" Height="95" Click="btn_right_Click" Content="{Binding Path=.[2][1], Converter={StaticResource imageconverter}}"/>
             </StackPanel>
             <StackPanel VerticalAlignment="Top" HorizontalAlignment="Center" Orientation="Horizontal" Height="95" Margin="0,32,0,0">
-                <Button x:Name="btn_bottomleft" Width="95" Height="95" Click="btn_bottomleft_Click" Margin="0,0,32,0"/>
-                <Button x:Name="btn_bottomcentre" Width="95" Height="95" Click="btn_bottomcentre_Click" Margin="0,0,32,0"/>
-                <Button x:Name="btn_bottomright" Width="95" Height="95" Click="btn_bottomright_Click"/>
+                <Button x:Name="btn_bottomleft" Width="95" Height="95" Click="btn_bottomleft_Click" Margin="0,0,32,0" Content="{Binding Path=.[0][2], Converter={StaticResource imageconverter}}"/>
+                <Button x:Name="btn_bottomcentre" Width="95" Height="95" Click="btn_bottomcentre_Click" Margin="0,0,32,0" Content="{Binding Path=.[1][2], Converter={StaticResource imageconverter}}"/>
+                <Button x:Name="btn_bottomright" Width="95" Height="95" Click="btn_bottomright_Click" Content="{Binding Path=.[2][2], Converter={StaticResource imageconverter}}"/>
             </StackPanel>
         </StackPanel>
+        
         <Canvas x:Name="thegrid" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <Label x:Name="lbl_message" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Goudy Stout" FontSize="1" Foreground="Orange" FontWeight="Bold"/>
     </Grid>

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,33 +20,38 @@ namespace TicTacToe
 
     public class Board
     {
-        private Marker[,] _grid = new Marker[3, 3];
         private Marker _marker = Marker.Cross;
         private TriggerEnd _winAction = null;
         private TriggerEnd _drawTrue = null;
+        private TriggerEnd _refreshBoard = null;
         private int _numMoves = 0;
 
-        public Marker[,] Grid => _grid;     
+        public ObservableCollection<ObservableCollection<Marker>> theGrid;
 
-        public Board(TriggerEnd winTrue = null, TriggerEnd drawTrue = null)
+        public Board(TriggerEnd winTrue = null, TriggerEnd drawTrue = null, TriggerEnd refreshBoard = null)
         {
+            theGrid = new ObservableCollection<ObservableCollection<Marker>>();
+
             for (int i = 0; i < 3; i++)
             {
+                var temp = new ObservableCollection<Marker>();
                 for (int k = 0; k < 3; k++)
                 {
-                    _grid[i, k] = Marker.Blank;
+                    temp.Add(Marker.Blank);
                 }
+                theGrid.Add(temp);
             }
 
             _winAction = winTrue;
             _drawTrue = drawTrue;
+            _refreshBoard = refreshBoard;
         }
 
         public void PlaceMarker(int x, int y)
         {
-            if ((x < 3) && (y < 3) && (_grid[x, y] == Marker.Blank))
+            if ((x < 3) && (y < 3) && (theGrid[y][x] == Marker.Blank))
             {
-                _grid[x, y] = _marker;
+                theGrid[y][x] = _marker;
                 _marker = (_marker == Marker.Cross) ? Marker.Nought : Marker.Cross;
                 _numMoves += 1;
 
@@ -54,8 +61,7 @@ namespace TicTacToe
                     var winningLine = GetWinningLine(x, y);
                     _winAction?.Invoke(winningLine);
                 }
-
-                if (_numMoves == 9) //The board is full
+                else if (_numMoves == 9) //The board is full
                 {
                     _drawTrue?.Invoke(null);
                 }
@@ -65,7 +71,7 @@ namespace TicTacToe
 
         public Boolean IsFreeSpace(int x, int y)
         {
-            if ((x < 3) && (y < 3) && (_grid[x, y] == Marker.Blank))
+            if ((x < 3) && (y < 3) && (theGrid[y][x] == Marker.Blank))
             {
                 return true;
             }
@@ -102,13 +108,13 @@ namespace TicTacToe
 
         public Boolean IsWinningMove(int x, int y)
         {
-            var theMarker = _grid[x, y];
+            var theMarker = theGrid[y][x];
             foreach (Line item in this.GetLines(x, y))
             {
                 var winner = true;
                 foreach (Point xy in item.PointsList)
                 {
-                    winner = (_grid[(int)xy.X, (int)xy.Y] == theMarker) & winner;
+                    winner = (theGrid[(int)xy.Y][(int)xy.X] == theMarker) & winner;
                 }
 
                 if (winner)
@@ -121,13 +127,13 @@ namespace TicTacToe
 
         public Line GetWinningLine(int x, int y)
         {
-            var theMarker = _grid[x, y];
+            var theMarker = theGrid[y][x];
             foreach (Line item in this.GetLines(x, y))
             {
                 var winner = true;
                 foreach (Point xy in item.PointsList)
                 {
-                    winner = (_grid[(int)xy.X, (int)xy.Y] == theMarker) & winner;
+                    winner = (theGrid[(int)xy.Y][(int)xy.X] == theMarker) & winner;
                 }
 
                 if (winner)
@@ -136,6 +142,21 @@ namespace TicTacToe
                 }
             }
             return null;
+        }
+
+        public void RefreshBoard()
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                for (int k = 0; k < 3; k++)
+                {
+                    theGrid[i][k] = Marker.Blank;
+                }
+            }
+
+            _marker = Marker.Cross;
+            _numMoves = 0;
+            _refreshBoard?.Invoke(null);
         }
     }
 
