@@ -1,4 +1,12 @@
 # Empiric Grimoire
+
+|Attribute|Value  |
+|--|--|
+|Language  |C#, SQL |
+|UI Type|WPF  |
+|Architecture|pseudo-MVVM, TDD |
+|Time|3 months part-time [2 hours per day max]|
+
 A C# desktop application I created for Derivco. This tool allowed an Empirical tester to easily connect to a database to check:
  - the number of strategies a game needed to be tested on
  - the amount of hours needed to perform this testing
