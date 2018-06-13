@@ -7,7 +7,7 @@
 |Architecture|pseudo-MVVM |
 |Time|5 days [4 hours average per day]|
 
-This is project was created to showcase my C# skills:
+This project was created to showcase my C# skills:
  - WPF
  - Object-Orientated Programming
  - Testcases (TDD)
