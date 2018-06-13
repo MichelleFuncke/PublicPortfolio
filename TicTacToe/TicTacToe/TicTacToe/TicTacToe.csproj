@@ -35,6 +35,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>tictactoe_hd_itunesartwork_9Bv_icon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -103,6 +106,12 @@
     <Resource Include="Pictures\Blank.png" />
     <Resource Include="Pictures\Cross.png" />
     <Resource Include="Pictures\Nought.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Pictures\tictactoe_icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="tictactoe_hd_itunesartwork_9Bv_icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
