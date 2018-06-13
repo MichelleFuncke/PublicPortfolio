@@ -23,12 +23,15 @@ namespace TicTacToe
         private Marker _marker = Marker.Cross;
         private TriggerEnd _winAction = null;
         private TriggerEnd _drawTrue = null;
+        private TriggerEnd _refreshBoard = null;
         private int _numMoves = 0;
 
-        public ObservableCollection<ObservableCollection<Marker>> theGrid = new ObservableCollection<ObservableCollection<Marker>>();
+        public ObservableCollection<ObservableCollection<Marker>> theGrid;
 
-        public Board(TriggerEnd winTrue = null, TriggerEnd drawTrue = null)
+        public Board(TriggerEnd winTrue = null, TriggerEnd drawTrue = null, TriggerEnd refreshBoard = null)
         {
+            theGrid = new ObservableCollection<ObservableCollection<Marker>>();
+
             for (int i = 0; i < 3; i++)
             {
                 var temp = new ObservableCollection<Marker>();
@@ -41,6 +44,7 @@ namespace TicTacToe
 
             _winAction = winTrue;
             _drawTrue = drawTrue;
+            _refreshBoard = refreshBoard;
         }
 
         public void PlaceMarker(int x, int y)
@@ -138,6 +142,21 @@ namespace TicTacToe
                 }
             }
             return null;
+        }
+
+        public void RefreshBoard()
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                for (int k = 0; k < 3; k++)
+                {
+                    theGrid[i][k] = Marker.Blank;
+                }
+            }
+
+            _marker = Marker.Cross;
+            _numMoves = 0;
+            _refreshBoard?.Invoke(null);
         }
     }
 

@@ -45,40 +45,36 @@ namespace TicTacToe
     /// </summary>
     public partial class MainWindow : Window
     {
+        //Global Variables
         public Board theBoard;
 
 
-        public Image ConvertMarker(Marker marker)
+        public double AdjustPosition(double buttonWidth, double topCorner, double coordinate)
         {
-            Image theImage = new Image()
-            {
-                HorizontalAlignment = System.Windows.HorizontalAlignment.Center,
-                VerticalAlignment = System.Windows.VerticalAlignment.Center,
-                Source = new BitmapImage(new Uri("pack://application:,,,/Pictures/" + Enum.GetName(typeof(Marker), marker) + ".png")),
-            };
-            return theImage;
+            var buttonWidthMultiplier = (buttonWidth / 2) * (2 * coordinate + 1);
+            //The spacing between the blocks is 32 = btn_topleft.Width / 3
+            var spacingWidthMultiplier = (buttonWidth / 3) * coordinate;
+
+            return topCorner + buttonWidthMultiplier + spacingWidthMultiplier;
         }
 
         public void TriggerWin(Line theLine)
         {
-            var drawingLine = new System.Windows.Shapes.Line();
-            drawingLine.Stroke = Brushes.LightSteelBlue;
-
-            //Middle of first block
-            var top = btn_topleft.TranslatePoint(new System.Windows.Point(0, 0), this);
+            var top = btn_topleft.TranslatePoint(new Point(0, 0), this);
             var firstPoint = theLine.PointsList[0];
             var lastPoint = theLine.PointsList[theLine.PointsList.Count - 1];
 
-            //The spacing between the blocks is 32 = btn_topleft.Width / 3
-            drawingLine.X1 = top.X + (btn_topleft.Width / 2) * (2 * firstPoint.Y + 1) + (btn_topleft.Width / 3) * firstPoint.Y;
-            drawingLine.Y1 = top.Y + (btn_topleft.Height / 2) * (2 * firstPoint.X + 1) + (btn_topleft.Height / 3) * firstPoint.X;
-            drawingLine.X2 = top.X + (btn_topleft.Width / 2) * (2 * lastPoint.Y + 1) + (btn_topleft.Width / 3) * lastPoint.Y;
-            drawingLine.Y2 = top.Y + (btn_topleft.Height / 2) * (2 * lastPoint.X + 1) + (btn_topleft.Height / 3) * lastPoint.X;
-
-            drawingLine.HorizontalAlignment = HorizontalAlignment.Left;
-            drawingLine.VerticalAlignment = VerticalAlignment.Center;
-            drawingLine.StrokeThickness = 15;
-            drawingLine.Stroke = Brushes.Green;
+            var drawingLine = new System.Windows.Shapes.Line()
+            {
+                HorizontalAlignment = HorizontalAlignment.Left,
+                VerticalAlignment = VerticalAlignment.Center,
+                StrokeThickness = 15,
+                Stroke = Brushes.Green,
+                X1 = AdjustPosition(btn_topleft.Width, top.X, firstPoint.Y),
+                Y1 = AdjustPosition(btn_topleft.Height, top.Y, firstPoint.X),
+                X2 = AdjustPosition(btn_topleft.Width, top.X, lastPoint.Y),
+                Y2 = AdjustPosition(btn_topleft.Height, top.Y, lastPoint.X)
+            };
 
             thegrid.Children.Add(drawingLine);
 
@@ -90,6 +86,13 @@ namespace TicTacToe
         {
             lbl_message.Content = "Draw";
             lbl_message.FontSize = 48;
+        }
+
+        public void TriggerRefresh(Line theLine)
+        {
+            lbl_message.Content = "";
+            lbl_message.FontSize = 1;
+            thegrid.Children.Clear();
         }
 
         public void WinningState()
@@ -106,7 +109,7 @@ namespace TicTacToe
         {
             InitializeComponent();
 
-            theBoard = new Board(TriggerWin, TriggerDraw);
+            theBoard = new Board(TriggerWin, TriggerDraw, TriggerRefresh);
             Main.DataContext = theBoard.theGrid;
 
             //WinningState();
@@ -168,10 +171,10 @@ namespace TicTacToe
             switch (e.Key)
             {
                 case Key.Clear:
-                    theBoard = new Board(TriggerWin, TriggerDraw);
+                    theBoard.RefreshBoard();
                     break;
                 case Key.F5:
-                    theBoard = new Board(TriggerWin, TriggerDraw);
+                    theBoard.RefreshBoard();
                     break;
                 default:
                     break;
