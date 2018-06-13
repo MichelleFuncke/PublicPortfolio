@@ -80,12 +80,16 @@ namespace TicTacToe
 
             lbl_message.Content = "WINNER";
             lbl_message.FontSize = 48;
+
+            sp_BoardGrid.IsEnabled = false;
         }
 
         public void TriggerDraw(Line theLine)
         {
             lbl_message.Content = "Draw";
             lbl_message.FontSize = 48;
+
+            sp_BoardGrid.IsEnabled = false;
         }
 
         public void TriggerRefresh(Line theLine)
@@ -93,6 +97,7 @@ namespace TicTacToe
             lbl_message.Content = "";
             lbl_message.FontSize = 1;
             thegrid.Children.Clear();
+            sp_BoardGrid.IsEnabled = true;
         }
 
         public void WinningState()
