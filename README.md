@@ -8,6 +8,7 @@ List of projects:
  - [SQL](SQL%20scripts/README.md)
  - Python
  - [Masters Project](Masters%20Project/README.md)
+ - [TicTacToe](TicTacToe/README.md)
 
 ## Empiric Grimoire
 A C# desktop application I created for Derivco. This tool allowed an Empirical tester to easily connect to a database to check:
@@ -59,3 +60,10 @@ I have used Python to create mini projects.
 
 ## Masters Project - Simulating the early universe
 I created a program that simulated the development of the early universe using Spectral Methods. The application made use of the numpy and scipy libraries to perform convolutions.
+
+## TicTacToe
+This project was created to showcase my C# skills:
+ - WPF
+ - Object-Orientated Programming
+ - Testcases (TDD)
+ - GUI data binding (pseudo-MVVM)
