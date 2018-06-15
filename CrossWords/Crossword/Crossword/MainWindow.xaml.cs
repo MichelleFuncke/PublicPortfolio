@@ -78,7 +78,7 @@ namespace Crossword
                     if (ControlPresent[startCol,startRow])
                     {
                         //Check expected letter if the textbox does exist
-                        //TextBox theBox = (TextBox)(grid.Children.Cast<UIElement>().Where(i => (Grid.GetRow(i) == startRow) && (Grid.GetColumn(i) == startCol)));
+                        TextBox theBox = grid.Children.Cast<UIElement>().Where(i => (Grid.GetRow(i) == startRow) && (Grid.GetColumn(i) == startCol)).Cast<TextBox>().FirstOrDefault<TextBox>();
                         
                         //move in the direction
                         startCol += directionCol;
