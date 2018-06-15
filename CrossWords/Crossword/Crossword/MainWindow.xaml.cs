@@ -24,5 +24,37 @@ namespace Crossword
         {
             InitializeComponent();
         }
+
+        private void CreateGrid(Panel ParentControl, int ColumnCount, int RowCount, int Size)
+        {
+            Grid CrossWordGrid = new Grid();
+            CrossWordGrid.Background = new SolidColorBrush(Colors.Black);
+
+            for (int i = 0; i < ColumnCount; i++)
+            {
+                ColumnDefinition Col = new ColumnDefinition();
+                Col.Width = new GridLength(Size);
+
+                CrossWordGrid.ColumnDefinitions.Add(Col);
+            }
+
+            for (int i = 0; i < RowCount; i++)
+            {
+                RowDefinition Row = new RowDefinition();
+                Row.Height = new GridLength(Size);
+
+                CrossWordGrid.RowDefinitions.Add(Row);
+            }
+
+            CrossWordGrid.ShowGridLines = true;
+
+            ParentControl.Children.Add(CrossWordGrid);
+        }
+
+        private void mnuLoad_Click(object sender, RoutedEventArgs e)
+        {
+
+            CreateGrid(spMainPage, 10, 10, 50);
+        }
     }
 }

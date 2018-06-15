@@ -1,17 +1,17 @@
-﻿<Window x:Class="Crossword.MainWindow"
+﻿<Window x:Name="winCrossWordWindow" x:Class="Crossword.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Crossword"
         mc:Ignorable="d"
-        Title="Cross Word Puzzles" Height="450" Width="800">
-    <Grid Name="grdMainGrid">
+        Title="Cross Word Puzzles" Height="450" Width="800" SizeToContent="WidthAndHeight">
+    <StackPanel Name="spMainPage">
         <Menu HorizontalAlignment="Left" Height="21" VerticalAlignment="Top">
-            <MenuItem Header="Load from File"/>
-            <MenuItem Header="Reset Puzzle"/>
-            <MenuItem Header="Check Answer"/>
+            <MenuItem x:Name="mnuLoad" Header="Load from File" Click="mnuLoad_Click"/>
+            <MenuItem x:Name="mnuReset" Header="Reset Puzzle"/>
+            <MenuItem x:Name="mnuCheck" Header="Check Answer"/>
         </Menu>
         <!-- Not sure if I need to add a grid to populate the puzzle here or in the code-->
-    </Grid>
+    </StackPanel>
 </Window>
