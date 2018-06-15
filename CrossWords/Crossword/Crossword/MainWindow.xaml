@@ -9,8 +9,8 @@
     <StackPanel Name="spMainPage">
         <Menu HorizontalAlignment="Left" Height="21" VerticalAlignment="Top">
             <MenuItem x:Name="mnuLoad" Header="Load from File" Click="mnuLoad_Click"/>
-            <MenuItem x:Name="mnuReset" Header="Reset Puzzle"/>
-            <MenuItem x:Name="mnuCheck" Header="Check Answer"/>
+            <MenuItem x:Name="mnuReset" Header="Reset Puzzle" Click="mnuReset_Click"/>
+            <MenuItem x:Name="mnuCheck" Header="Check Answer" Click="mnuCheck_Click"/>
         </Menu>
         <!-- Not sure if I need to add a grid to populate the puzzle here or in the code-->
     </StackPanel>

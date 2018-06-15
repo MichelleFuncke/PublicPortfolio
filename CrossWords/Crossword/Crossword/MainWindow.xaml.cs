@@ -20,14 +20,15 @@ namespace Crossword
     /// </summary>
     public partial class MainWindow : Window
     {
+        public Grid CrossWordGrid;
         public MainWindow()
         {
             InitializeComponent();
         }
 
-        private Grid CreateGrid(int ColumnCount, int RowCount, int Size)
+        private void CreateGrid(int ColumnCount, int RowCount, int Size)
         {
-            Grid CrossWordGrid = new Grid();
+            CrossWordGrid = new Grid();
             CrossWordGrid.Background = new SolidColorBrush(Colors.Black);
 
             for (int i = 0; i < ColumnCount; i++)
@@ -47,14 +48,18 @@ namespace Crossword
             }
 
             CrossWordGrid.ShowGridLines = true;
-            return CrossWordGrid;
         }
 
         private void mnuLoad_Click(object sender, RoutedEventArgs e)
         {
-            var grid = CreateGrid(10, 10, 50);
+            if (CrossWordGrid != null)
+            {
+                return;
+            }
+
+            CreateGrid(10, 10, 50);
             bool[,] ControlPresent = new bool[10, 10];
-            spMainPage.Children.Add(grid);
+            spMainPage.Children.Add(CrossWordGrid);
 
             //Read words from a file
             List<PuzzleWord> theList = new List<PuzzleWord>();
@@ -78,7 +83,7 @@ namespace Crossword
                     if (ControlPresent[startCol,startRow])
                     {
                         //Check expected letter if the textbox does exist
-                        PuzzleLetter theBox = grid.Children.Cast<PuzzleLetter>().Where(i => (Grid.GetRow(i) == startRow) && (Grid.GetColumn(i) == startCol)).FirstOrDefault();
+                        PuzzleLetter theBox = CrossWordGrid.Children.Cast<PuzzleLetter>().Where(i => (Grid.GetRow(i) == startRow) && (Grid.GetColumn(i) == startCol)).FirstOrDefault();
 
                         //Check that the expected letter in the textbox is equal to the expected letter we were trying to add
                         //If they aren't then the puzzle isn't valid and shouldn't be loaded
@@ -99,8 +104,8 @@ namespace Crossword
                         //determine the starting position
                         Grid.SetColumn(box, startCol);
                         Grid.SetRow(box, startRow);
-                        
-                        grid.Children.Add(box);
+
+                        CrossWordGrid.Children.Add(box);
                         ControlPresent[startCol, startRow] = true;
 
                         //move in the direction
@@ -111,6 +116,40 @@ namespace Crossword
 
                 //Add the clue to a list to display
             }  
+        }
+
+        private void mnuReset_Click(object sender, RoutedEventArgs e)
+        {
+            if (CrossWordGrid == null)
+            {
+                return;
+            }
+
+            foreach (PuzzleLetter item in CrossWordGrid.Children)
+            {
+                item.Text = "";
+            }
+
+            CrossWordGrid.Background = new SolidColorBrush(Colors.Black);
+        }
+
+        private void mnuCheck_Click(object sender, RoutedEventArgs e)
+        {
+            if (CrossWordGrid == null)
+            {
+                return;
+            }
+
+            var solved = true;
+            foreach (PuzzleLetter item in CrossWordGrid.Children)
+            {
+                solved = item.CheckLetter() && solved;
+            }
+
+            if (!solved)
+            {
+                CrossWordGrid.Background = new SolidColorBrush(Colors.Red);
+            } 
         }
     }
 }
