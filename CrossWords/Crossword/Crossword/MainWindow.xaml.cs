@@ -53,11 +53,13 @@ namespace Crossword
         private void mnuLoad_Click(object sender, RoutedEventArgs e)
         {
             var grid = CreateGrid(10, 10, 50);
+            bool[,] ControlPresent = new bool[10, 10];
             spMainPage.Children.Add(grid);
 
             //Read words from a file
             List<PuzzleWord> theList = new List<PuzzleWord>();
             theList.Add(new PuzzleWord("CAT", 1, "blabla", Direction.across.ToString(), 0, 2));
+            theList.Add(new PuzzleWord("CAN", 1, "blabla", Direction.down.ToString(), 0, 2));
 
             //foreach word in puzzle
             foreach (PuzzleWord word in theList)
@@ -72,33 +74,45 @@ namespace Crossword
                 //foreach character in the word
                 foreach (char letter in word.GetLetters())
                 {
-                    TextBox box = new TextBox()
+                    //Check the textbox doesn't exist
+                    if (ControlPresent[startCol,startRow])
                     {
-                        Text = "",
-                        FontSize = 24,
-                        HorizontalContentAlignment = HorizontalAlignment.Center,
-                        VerticalContentAlignment = VerticalAlignment.Center,
-                        CharacterCasing = CharacterCasing.Upper,
-                        Background = new SolidColorBrush(Colors.White),
-                        Foreground = new SolidColorBrush(Colors.Black),
-                    };
+                        //Check expected letter if the textbox does exist
+                        //TextBox theBox = (TextBox)(grid.Children.Cast<UIElement>().Where(i => (Grid.GetRow(i) == startRow) && (Grid.GetColumn(i) == startCol)));
+                        
+                        //move in the direction
+                        startCol += directionCol;
+                        startRow += directionRow;
+                    }
+                    else
+                    {
+                        //Create textbox if it doesn't already exist
+                        TextBox box = new TextBox()
+                        {
+                            Text = "",
+                            FontSize = 24,
+                            HorizontalContentAlignment = HorizontalAlignment.Center,
+                            VerticalContentAlignment = VerticalAlignment.Center,
+                            CharacterCasing = CharacterCasing.Upper,
+                            Background = new SolidColorBrush(Colors.White),
+                            Foreground = new SolidColorBrush(Colors.Black),
+                        };
 
-                    //determine the starting position
-                    Grid.SetColumn(box, startCol);
-                    Grid.SetRow(box, startRow);
+                        //determine the starting position
+                        Grid.SetColumn(box, startCol);
+                        Grid.SetRow(box, startRow);
+                        
+                        grid.Children.Add(box);
+                        ControlPresent[startCol, startRow] = true;
 
-                    //move in the direction
-                    startCol += directionCol;
-                    startRow += directionRow;
-
-                    grid.Children.Add(box);
+                        //move in the direction
+                        startCol += directionCol;
+                        startRow += directionRow;   
+                    }                    
                 }
 
                 //Add the clue to a list to display
-            }
-
-            //Create textbox if it doesn't already exist
-            //Check expected letter if the textbox does exist
+            }  
         }
     }
 }
