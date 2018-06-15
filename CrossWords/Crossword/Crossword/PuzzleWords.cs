@@ -34,8 +34,8 @@ namespace Crossword
             Clue = clue;            
             
             WordDirection = (Direction)Enum.Parse(typeof(Direction), direction.ToLower());
-            startC = StartColumn;
-            startR = StartRow;
+            StartColumn = startC;
+            StartRow = startR;
         }
 
         public IEnumerable<char> GetLetters()
