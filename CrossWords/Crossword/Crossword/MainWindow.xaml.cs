@@ -59,7 +59,7 @@ namespace Crossword
             //Read words from a file
             List<PuzzleWord> theList = new List<PuzzleWord>();
             theList.Add(new PuzzleWord("CAT", 1, "blabla", Direction.across.ToString(), 0, 2));
-            theList.Add(new PuzzleWord("CAN", 1, "blabla", Direction.down.ToString(), 0, 2));
+            theList.Add(new PuzzleWord("CAN", 1, "blabla", Direction.down.ToString(), 1, 1));
 
             //foreach word in puzzle
             foreach (PuzzleWord word in theList)
@@ -78,8 +78,15 @@ namespace Crossword
                     if (ControlPresent[startCol,startRow])
                     {
                         //Check expected letter if the textbox does exist
-                        TextBox theBox = grid.Children.Cast<UIElement>().Where(i => (Grid.GetRow(i) == startRow) && (Grid.GetColumn(i) == startCol)).Cast<TextBox>().FirstOrDefault<TextBox>();
-                        
+                        PuzzleLetter theBox = grid.Children.Cast<PuzzleLetter>().Where(i => (Grid.GetRow(i) == startRow) && (Grid.GetColumn(i) == startCol)).FirstOrDefault();
+
+                        //Check that the expected letter in the textbox is equal to the expected letter we were trying to add
+                        //If they aren't then the puzzle isn't valid and shouldn't be loaded
+                        if (letter != theBox.ExpectedLetter)
+                        {
+                            throw new Exception();
+                        }
+
                         //move in the direction
                         startCol += directionCol;
                         startRow += directionRow;
@@ -87,16 +94,7 @@ namespace Crossword
                     else
                     {
                         //Create textbox if it doesn't already exist
-                        TextBox box = new TextBox()
-                        {
-                            Text = "",
-                            FontSize = 24,
-                            HorizontalContentAlignment = HorizontalAlignment.Center,
-                            VerticalContentAlignment = VerticalAlignment.Center,
-                            CharacterCasing = CharacterCasing.Upper,
-                            Background = new SolidColorBrush(Colors.White),
-                            Foreground = new SolidColorBrush(Colors.Black),
-                        };
+                        PuzzleLetter box = new PuzzleLetter(letter);
 
                         //determine the starting position
                         Grid.SetColumn(box, startCol);

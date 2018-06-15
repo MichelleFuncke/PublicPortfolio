@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows;
 
 namespace Crossword
 {
@@ -47,19 +50,26 @@ namespace Crossword
         }
     }
 
-    public class PuzzleLetter
+    public class PuzzleLetter : TextBox
     {
         public char ExpectedLetter { get; private set; }
-        public char Letter { get; set; }
 
-        public PuzzleLetter(char expected)
+        public PuzzleLetter(char expectedLetter)
         {
-            ExpectedLetter = expected;
+            ExpectedLetter = expectedLetter;
+            this.MaxLength = 1;
+            this.Text = "";
+            this.FontSize = 24;
+            this.HorizontalContentAlignment = HorizontalAlignment.Center;
+            this.VerticalContentAlignment = VerticalAlignment.Center;
+            this.CharacterCasing = CharacterCasing.Upper;
+            this.Background = new SolidColorBrush(Colors.White);
+            this.Foreground = new SolidColorBrush(Colors.Black);
         }
 
         public Boolean CheckLetter()
         {
-            return ExpectedLetter == Letter;
+            return ExpectedLetter == this.Text.Cast<char>().FirstOrDefault();
         }
     }
 }
