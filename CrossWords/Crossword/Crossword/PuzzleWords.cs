@@ -54,9 +54,18 @@ namespace Crossword
     {
         public char ExpectedLetter { get; private set; }
 
-        public PuzzleLetter(char expectedLetter)
+        public PuzzleLetter()
+        {
+            this.Style = (Style)FindResource("TextBoxStyle");
+        }
+
+        public PuzzleLetter(char expectedLetter, string defaultNumber="")
         {
             ExpectedLetter = expectedLetter;
+
+            this.Style = (Style)FindResource("TextBoxStyle");
+            HeaderTemp.SetDefaultNumber(this, defaultNumber);
+
             this.MaxLength = 1;
             this.Text = "";
             this.FontSize = 24;

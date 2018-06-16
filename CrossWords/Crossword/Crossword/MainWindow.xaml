@@ -12,6 +12,8 @@
             <MenuItem x:Name="mnuReset" Header="Reset Puzzle" Click="mnuReset_Click"/>
             <MenuItem x:Name="mnuCheck" Header="Check Answer" Click="mnuCheck_Click"/>
         </Menu>
+        <local:PuzzleLetter Height="50" Width="50" TextWrapping="Wrap" Text="A" Background="Red" Foreground="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="24"
+                 local:HeaderTemp.DefaultNumber="2"/>
         <!-- Not sure if I need to add a grid to populate the puzzle here or in the code-->
     </StackPanel>
 </Window>
