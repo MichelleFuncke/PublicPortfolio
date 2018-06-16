@@ -4,6 +4,6 @@
              xmlns:local="clr-namespace:Crossword"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary Source="Dictionary_Textbox.xaml"/>
     </Application.Resources>
 </Application>

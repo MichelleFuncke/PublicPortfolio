@@ -57,6 +57,7 @@ namespace Crossword
         public PuzzleLetter(char expectedLetter)
         {
             ExpectedLetter = expectedLetter;
+            this.Style = (Style)FindResource("TextBoxStyle");
             this.MaxLength = 1;
             this.Text = "";
             this.FontSize = 24;
