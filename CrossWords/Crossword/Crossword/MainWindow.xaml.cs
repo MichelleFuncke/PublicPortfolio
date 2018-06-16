@@ -98,8 +98,13 @@ namespace Crossword
                     }
                     else
                     {
+                        string cornerNumber = "";
+                        if ((startCol == word.StartColumn) && (startRow == word.StartRow))
+                        {
+                            cornerNumber = word.ClueNumber.ToString();
+                        }
                         //Create textbox if it doesn't already exist
-                        PuzzleLetter box = new PuzzleLetter(letter);
+                        PuzzleLetter box = new PuzzleLetter(letter, cornerNumber);
 
                         //determine the starting position
                         Grid.SetColumn(box, startCol);
