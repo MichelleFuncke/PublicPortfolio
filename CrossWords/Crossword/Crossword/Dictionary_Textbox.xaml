@@ -10,7 +10,7 @@
     <SolidColorBrush x:Key="TextBoxFocusedBrush" Color="{StaticResource Color_024}" />
 
     <!-- *********************************  TextBox Style  ********************************* -->
-    <Style x:Key="TextBoxStyle" TargetType="TextBox">
+    <Style x:Key="TextBoxStyle" TargetType="local:PuzzleLetter">
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseHighBrush}" />
         <Setter Property="FontFamily" Value="{DynamicResource ControlContentThemeFontSize}" />
@@ -21,9 +21,8 @@
         <Setter Property="Padding" Value="6,3" />
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="TextBox">
+                <ControlTemplate TargetType="local:PuzzleLetter">
                     <Grid x:Name="RootElement" SnapsToDevicePixels="True">
-
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">
                                 <VisualState x:Name="Normal" />
@@ -54,7 +53,7 @@
                         </VisualStateManager.VisualStateGroups>
                         <Border x:Name="Border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Opacity="1">
                             <Grid>
-                                <Label Content="{TemplateBinding local:HeaderTemp.WordNumber}" Foreground="Black" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="12"/>
+                                <Label x:Name="CornerLabel" Content="{TemplateBinding local:HeaderTemp.WordNumber}" Foreground="Black" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="12"/>
                                 <Border x:Name="ReadOnlyVisualElement" Background="{TemplateBinding Background}" Opacity="0" />
                                 <ScrollViewer x:Name="PART_ContentHost" BorderThickness="0" IsTabStop="False" Padding="{TemplateBinding Padding}" />
                             </Grid>
@@ -67,5 +66,5 @@
         </Setter>
     </Style>
     
-    <Style BasedOn="{StaticResource TextBoxStyle}" TargetType="{x:Type TextBox}" />
+    <Style BasedOn="{StaticResource TextBoxStyle}" TargetType="{x:Type local:PuzzleLetter}" />
 </ResourceDictionary>
