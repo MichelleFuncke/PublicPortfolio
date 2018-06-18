@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Crossword.PopupWindows;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -250,7 +251,13 @@ namespace Crossword
         private void btnADD_Click(object sender, RoutedEventArgs e)
         {
             //Add to the list
-            theList.Add(new PuzzleWord("LOSSCENTER", 3, "Sycamore Integrated Weight __ __.", Direction.down.ToString(), 8, 3));
+            //theList.Add(new PuzzleWord("LOSSCENTER", 3, "Sycamore Integrated Weight __ __.", Direction.down.ToString(), 8, 3));
+
+            var Pop = new AddWindow((int)udColumn.Value - 1, (int)udRow.Value - 1);
+            if ((bool)Pop.ShowDialog())
+            {
+                theList.Add(Pop.Word);
+            }
 
             //Add to the grid
         }
@@ -258,6 +265,8 @@ namespace Crossword
         private void btnEDIT_Click(object sender, RoutedEventArgs e)
         {
             //Edit an existing clue
+            theList[0].Clue = "Excursions";
+            theList[0].ClueNumber = 4;
         }
 
         private void btnREMOVE_Click(object sender, RoutedEventArgs e)

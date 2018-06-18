@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows;
+using System.ComponentModel;
 
 namespace Crossword
 {
@@ -15,17 +16,45 @@ namespace Crossword
         down,
     }
 
-    public class PuzzleWord
-    {       
+    public class PuzzleWord : INotifyPropertyChanged
+    {
+        private int _clueNumber;
+        private String _clue;
+
         public String Word { get; private set; }
         public int Length { get; private set; }
         
-        public int ClueNumber { get; private set; }
-        public String Clue { get; private set; }
+        public int ClueNumber
+        {
+            get { return _clueNumber; }
+            set
+            {
+                if (value > 0)
+                {
+                    _clueNumber = value;
+                    OnPropertyChanged("ClueNumber");
+                }
+            }
+        }
+        public String Clue
+        {
+            get { return _clue; }
+            set
+            {
+                _clue = value;
+                OnPropertyChanged("Clue");
+            }
+        }
 
         public Direction WordDirection { get; private set; }
         public int StartColumn { get; private set; }
         public int StartRow { get; private set; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
 
 
         public PuzzleWord(string word, int cluenumber, string clue, string direction, int startC, int startR)
