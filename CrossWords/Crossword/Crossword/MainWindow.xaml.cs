@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,6 +22,7 @@ namespace Crossword
     public partial class MainWindow : Window
     {
         public Grid CrossWordGrid;
+        ObservableCollection<PuzzleWord> theList;
 
         public MainWindow()
         {
@@ -51,7 +53,7 @@ namespace Crossword
             CrossWordGrid.ShowGridLines = true;
         }
 
-        private List<PuzzleWord> Puzzle1(out int colCount, out int rowCount)
+        private void Puzzle1(out int colCount, out int rowCount)
         {
             colCount = 18;
             rowCount = 9;
@@ -60,7 +62,7 @@ namespace Crossword
             spMain.Children.Add(CrossWordGrid);
 
             //Read words from a file
-            List<PuzzleWord> theList = new List<PuzzleWord>();
+            theList = new ObservableCollection<PuzzleWord>();
             //across
             theList.Add(new PuzzleWord("MOTORWORKS", 1, "Get a $13.95 oil charge", Direction.across.ToString(), 8, 2));
             theList.Add(new PuzzleWord("CARPETLANDUSA", 2, "With your tax refund get carpet", Direction.across.ToString(), 0, 4));
@@ -73,11 +75,9 @@ namespace Crossword
             theList.Add(new PuzzleWord("GIORDANOS", 2, "\"Love Takes Many Forms\"", Direction.down.ToString(), 9, 0));
             theList.Add(new PuzzleWord("ROSS", 3, "Hanser ___. A leader in eye care", Direction.down.ToString(), 11, 1));
             theList.Add(new PuzzleWord("MIKIMOTO", 4, "Japanese steakhouse in Dekalls featuring hibachi dinners", Direction.down.ToString(), 16, 0));
-
-            return theList;
         }
 
-        private List<PuzzleWord> Puzzle2(out int colCount, out int rowCount)
+        private void Puzzle2(out int colCount, out int rowCount)
         {
             colCount = 18;
             rowCount = 13;
@@ -86,7 +86,7 @@ namespace Crossword
             spMain.Children.Add(CrossWordGrid);
 
             //Read words from a file
-            List<PuzzleWord> theList = new List<PuzzleWord>();
+            theList = new ObservableCollection<PuzzleWord>();
             //across
             theList.Add(new PuzzleWord("ULLRICH", 1, "__ Law, Estate Planning, Wills, Trusts, Elder law", Direction.across.ToString(), 10, 2));
             theList.Add(new PuzzleWord("FUNME", 2, "Excursions and Entertainment", Direction.across.ToString(), 1, 3));
@@ -103,11 +103,9 @@ namespace Crossword
             theList.Add(new PuzzleWord("MULCHWORKS", 4, "Where hundreds receive great service every year", Direction.down.ToString(), 10, 1));
             theList.Add(new PuzzleWord("HARVEST", 5, "__ Bible Chapel. Good Friday 7pm", Direction.down.ToString(), 13, 0));
             theList.Add(new PuzzleWord("LEHAN", 6, "We're more than medicine", Direction.down.ToString(), 17, 4));
-
-            return theList;
         }
 
-        private void PopulateGrid(int colCount, int rowCount, List<PuzzleWord> theList)
+        private void PopulateGrid(int colCount, int rowCount)
         {
             bool[,] ControlPresent = new bool[colCount, rowCount];
 
@@ -179,9 +177,9 @@ namespace Crossword
             }
 
             int colCount, rowCount;
-            var theList = Puzzle1(out colCount, out rowCount);
+            Puzzle1(out colCount, out rowCount);
 
-            PopulateGrid(colCount, rowCount, theList);
+            PopulateGrid(colCount, rowCount);
 
             tabWindow.SelectedItem = tbiSolvePuzzle;
         }
@@ -229,6 +227,13 @@ namespace Crossword
             CreateGrid(colCount, rowCount, 40);
 
             spMakePuzzle.Children.Add(CrossWordGrid);
+
+            theList = new ObservableCollection<PuzzleWord>();
+            theList.Add(new PuzzleWord("FUNME", 2, "Excursions and Entertainment", Direction.across.ToString(), 1, 3));
+            theList.Add(new PuzzleWord("QUALITY", 1, "__ Mattress Warehouse. Get a free queen", Direction.down.ToString(), 1, 6));
+            theList.Add(new PuzzleWord("JAMRAH", 2, "Chicken Shawarma Meal Deal, $7.99", Direction.down.ToString(), 4, 1));
+
+            lbClues.ItemsSource = theList;
         }
 
         private void btnResize_Click(object sender, RoutedEventArgs e)
@@ -240,6 +245,27 @@ namespace Crossword
 
             CreateGrid(col, row, 40);
             spMakePuzzle.Children.Add(CrossWordGrid);
+        }
+
+        private void btnADD_Click(object sender, RoutedEventArgs e)
+        {
+            //Add to the list
+            theList.Add(new PuzzleWord("LOSSCENTER", 3, "Sycamore Integrated Weight __ __.", Direction.down.ToString(), 8, 3));
+
+            //Add to the grid
+        }
+
+        private void btnEDIT_Click(object sender, RoutedEventArgs e)
+        {
+            //Edit an existing clue
+        }
+
+        private void btnREMOVE_Click(object sender, RoutedEventArgs e)
+        {
+            //Remove from the list
+            theList.Remove(lbClues.SelectedItem as PuzzleWord);
+
+            //Remove from the grid
         }
     }
 }

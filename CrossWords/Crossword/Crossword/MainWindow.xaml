@@ -36,11 +36,21 @@
                         </StackPanel>
                         <StackPanel Name="spMakePuzzle">
                             <TextBlock Text="Clues"/>
-                            <ListBox Name="lbClues"/>
+                            <ListBox Name="lbClues">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Path=WordDirection}" Width="95"/>
+                                            <TextBlock Text="{Binding Path=ClueNumber}" Width="95"/>
+                                            <TextBlock Text="{Binding Path=Word}" Width="95"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                <Button Name="btnADD" Content="ADD" Padding="5" Margin="5"/>
-                                <Button Name="btnEDIT" Content="EDIT" Padding="5" Margin="5"/>
-                                <Button Name="btnREMOVE" Content="REMOVE" Padding="5" Margin="5"/>
+                                <Button Name="btnADD" Content="ADD" Padding="5" Margin="5" Click="btnADD_Click"/>
+                                <Button Name="btnEDIT" Content="EDIT" Padding="5" Margin="5" Click="btnEDIT_Click"/>
+                                <Button Name="btnREMOVE" Content="REMOVE" Padding="5" Margin="5" Click="btnREMOVE_Click"/>
                             </StackPanel>
                             <!--grid-->
                         </StackPanel>
