@@ -21,6 +21,7 @@ namespace Crossword
     public partial class MainWindow : Window
     {
         public Grid CrossWordGrid;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -50,26 +51,13 @@ namespace Crossword
             CrossWordGrid.ShowGridLines = true;
         }
 
-        private void mnuLoad_Click(object sender, RoutedEventArgs e)
-        {
-            if (CrossWordGrid != null)
-            {
-                return;
-            }
-
-            int colCount, rowCount;
-            var theList = Puzzle2(out colCount, out rowCount);
-
-            PopulateGrid(colCount, rowCount, theList);
-        }
-
         private List<PuzzleWord> Puzzle1(out int colCount, out int rowCount)
         {
             colCount = 18;
             rowCount = 9;
             CreateGrid(colCount, rowCount, 50);
 
-            spMainPage.Children.Add(CrossWordGrid);
+            spMain.Children.Add(CrossWordGrid);
 
             //Read words from a file
             List<PuzzleWord> theList = new List<PuzzleWord>();
@@ -95,7 +83,7 @@ namespace Crossword
             rowCount = 13;
             CreateGrid(colCount, rowCount, 50);
 
-            spMainPage.Children.Add(CrossWordGrid);
+            spMain.Children.Add(CrossWordGrid);
 
             //Read words from a file
             List<PuzzleWord> theList = new List<PuzzleWord>();
@@ -183,6 +171,21 @@ namespace Crossword
             }
         }
 
+        private void mnuLoad_Click(object sender, RoutedEventArgs e)
+        {
+            if (CrossWordGrid != null)
+            {
+                return;
+            }
+
+            int colCount, rowCount;
+            var theList = Puzzle1(out colCount, out rowCount);
+
+            PopulateGrid(colCount, rowCount, theList);
+
+            tabWindow.SelectedItem = tbiSolvePuzzle;
+        }
+
         private void mnuReset_Click(object sender, RoutedEventArgs e)
         {
             if (CrossWordGrid == null)
@@ -215,6 +218,28 @@ namespace Crossword
             {
                 CrossWordGrid.Background = new SolidColorBrush(Colors.Red);
             } 
+        }
+
+        private void mnuCreate_Click(object sender, RoutedEventArgs e)
+        {
+            tabWindow.SelectedItem = tbiCreatePuzzle;
+
+            var colCount = 10;
+            var rowCount = 10;
+            CreateGrid(colCount, rowCount, 40);
+
+            spMakePuzzle.Children.Add(CrossWordGrid);
+        }
+
+        private void btnResize_Click(object sender, RoutedEventArgs e)
+        {
+            var col = (int)udColumn.Value;
+            var row = (int)udRow.Value;
+
+            spMakePuzzle.Children.Remove(CrossWordGrid);
+
+            CreateGrid(col, row, 40);
+            spMakePuzzle.Children.Add(CrossWordGrid);
         }
     }
 }

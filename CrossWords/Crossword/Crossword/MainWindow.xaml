@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Crossword"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
         Title="Cross Word Puzzles" Height="450" Width="800" SizeToContent="WidthAndHeight">
     <StackPanel Name="spMainPage">
@@ -11,7 +12,42 @@
             <MenuItem x:Name="mnuLoad" Header="Load from File" Click="mnuLoad_Click"/>
             <MenuItem x:Name="mnuReset" Header="Reset Puzzle" Click="mnuReset_Click"/>
             <MenuItem x:Name="mnuCheck" Header="Check Answer" Click="mnuCheck_Click"/>
+            <MenuItem x:Name="mnuCreate" Header="Create Puzzle" Click="mnuCreate_Click"/>
         </Menu>
+        <TabControl Name="tabWindow">
+            <TabItem Name="tbiMainPage" Header="Main Page">
+                <Grid Background="#FFE5E5E5">
+                    <TextBlock Text="HI THERE!!! Welcome to the wonderful world of crossword puzzles"/>
+                </Grid>
+            </TabItem>
+            <TabItem Name="tbiSolvePuzzle" Header="Solve">
+                <StackPanel Name="spMain"/>
+            </TabItem>
+            <TabItem Name="tbiCreatePuzzle" Header="Create">
+                <Grid Background="#FFE5E5E5">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Grid Size:" Padding="10"/>
+                            <TextBlock Text="Column:" Padding="5" VerticalAlignment="Center"/>
+                            <xctk:IntegerUpDown x:Name="udColumn" Height="28" Width="75" FormatString="N0" Value="10" Increment="1" Maximum="30" Minimum="1"/>
+                            <TextBlock Text="Row:" Padding="5" VerticalAlignment="Center"/>
+                            <xctk:IntegerUpDown x:Name="udRow" Height="28" Width="75" FormatString="N0" Value="10" Increment="1" Maximum="30" Minimum="1"/>
+                            <Button Name="btnResize" Content="RESIZE GRID" Margin="5" Padding="5" Click="btnResize_Click"/>
+                        </StackPanel>
+                        <StackPanel Name="spMakePuzzle">
+                            <TextBlock Text="Clues"/>
+                            <ListBox Name="lbClues"/>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Button Name="btnADD" Content="ADD" Padding="5" Margin="5"/>
+                                <Button Name="btnEDIT" Content="EDIT" Padding="5" Margin="5"/>
+                                <Button Name="btnREMOVE" Content="REMOVE" Padding="5" Margin="5"/>
+                            </StackPanel>
+                            <!--grid-->
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+        </TabControl>
         <!--local:PuzzleLetter Height="50" Width="50" TextWrapping="Wrap" Text="A" Background="Red" Foreground="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="24"
                  local:HeaderTemp.DefaultNumber="2"/-->
     </StackPanel>
