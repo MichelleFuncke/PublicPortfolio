@@ -31,7 +31,7 @@ namespace Crossword
             InitializeComponent();
         }
 
-        private void CreateGrid(int ColumnCount, int RowCount, int Size, Panel ParentControl)
+        private void CreateGrid(int ColumnCount, int RowCount, int Size, Panel ParentControl, bool gridLines = false)
         {
             CrossWordGrid = new Grid();
             CrossWordGrid.Background = new SolidColorBrush(Colors.Black);
@@ -52,13 +52,14 @@ namespace Crossword
                 CrossWordGrid.RowDefinitions.Add(Row);
             }
 
-            CrossWordGrid.ShowGridLines = true;
+            CrossWordGrid.ShowGridLines = gridLines;
 
             ControlPresent = new bool[ColumnCount, RowCount];
 
             ParentControl.Children.Add(CrossWordGrid);
         }
 
+        #region Ready puzzles
         private void Puzzle1(out int colCount, out int rowCount)
         {
             colCount = 18;
@@ -106,66 +107,7 @@ namespace Crossword
             theList.Add(new PuzzleWord("HARVEST", 5, "__ Bible Chapel. Good Friday 7pm", Direction.down.ToString(), 13, 0));
             theList.Add(new PuzzleWord("LEHAN", 6, "We're more than medicine", Direction.down.ToString(), 17, 4));
         }
-
-        private void mnuLoad_Click(object sender, RoutedEventArgs e)
-        {
-            tabWindow.SelectedItem = tbiSolvePuzzle;
-
-            if (CrossWordGrid != null)
-            {
-                //Can't just remove CrossWordGrid because it might be a new instance
-                spMain.Children.RemoveAt(spMain.Children.Count - 1);
-            }
-
-            int colCount, rowCount;
-            Puzzle2(out colCount, out rowCount);
-
-            List<PuzzleWord> invalidWords = new List<PuzzleWord>();
-
-            foreach (PuzzleWord word in theList)
-            {
-                DrawPuzzleWord(word, ControlPresent, invalidWords);
-            }
-
-            if (invalidWords.Count() > 0)
-            {
-                MessageBox.Show("Some words weren't drawn because they were invalid");
-            } 
-        }
-
-        private void mnuReset_Click(object sender, RoutedEventArgs e)
-        {
-            if (CrossWordGrid == null)
-            {
-                return;
-            }
-
-            foreach (PuzzleLetter item in CrossWordGrid.Children)
-            {
-                item.Text = "";
-            }
-
-            CrossWordGrid.Background = new SolidColorBrush(Colors.Black);
-        }
-
-        private void mnuCheck_Click(object sender, RoutedEventArgs e)
-        {
-            if (CrossWordGrid == null)
-            {
-                return;
-            }
-
-            var solved = true;
-            foreach (PuzzleLetter item in CrossWordGrid.Children)
-            {
-                solved = item.CheckLetter() && solved;
-            }
-
-            if (!solved)
-            {
-                CrossWordGrid.Background = new SolidColorBrush(Colors.Red);
-            } 
-        }
+        #endregion
 
         #region Create puzzle
         private void mnuCreate_Click(object sender, RoutedEventArgs e)
@@ -184,7 +126,7 @@ namespace Crossword
 
             var colCount = 10;
             var rowCount = 10;
-            CreateGrid(colCount, rowCount, 40, spMakePuzzle);
+            CreateGrid(colCount, rowCount, 40, spMakePuzzle, true);
             udColumn.Value = colCount;
             udRow.Value = rowCount;
 
@@ -353,6 +295,74 @@ namespace Crossword
             }
             //If there were no conflicts then the word should fit on the grid
             return true;
+        }
+        #endregion
+
+        #region Solve Puzzle
+        private void mnuLoad_Click(object sender, RoutedEventArgs e)
+        {
+            tabWindow.SelectedItem = tbiSolvePuzzle;
+
+            if (CrossWordGrid != null)
+            {
+                //Can't just remove CrossWordGrid because it might be a new instance
+
+                //Find the location of the button just before the grid
+                var cluesIndex = spMain.Children.IndexOf(lbClues2);
+                //Remove everything after this button
+                spMain.Children.RemoveRange(cluesIndex + 1, 4);
+            }
+
+            int colCount, rowCount;
+            Puzzle2(out colCount, out rowCount);
+
+            List<PuzzleWord> invalidWords = new List<PuzzleWord>();
+
+            foreach (PuzzleWord word in theList)
+            {
+                DrawPuzzleWord(word, ControlPresent, invalidWords);
+            }
+
+            if (invalidWords.Count() > 0)
+            {
+                MessageBox.Show("Some words weren't drawn because they were invalid");
+            }
+
+            lbClues2.ItemsSource = theList;
+        }
+
+        private void btnReset_Click(object sender, RoutedEventArgs e)
+        {
+            if (CrossWordGrid == null)
+            {
+                return;
+            }
+
+            foreach (PuzzleLetter item in CrossWordGrid.Children)
+            {
+                item.Text = "";
+            }
+
+            CrossWordGrid.Background = new SolidColorBrush(Colors.Black);
+        }
+
+        private void btnCheck_Click(object sender, RoutedEventArgs e)
+        {
+            if (CrossWordGrid == null)
+            {
+                return;
+            }
+
+            var solved = true;
+            foreach (PuzzleLetter item in CrossWordGrid.Children)
+            {
+                solved = item.CheckLetter() && solved;
+            }
+
+            if (!solved)
+            {
+                CrossWordGrid.Background = new SolidColorBrush(Colors.Red);
+            }
         }
         #endregion
     }

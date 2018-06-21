@@ -10,8 +10,6 @@
     <StackPanel Name="spMainPage">
         <Menu HorizontalAlignment="Left" Height="21" VerticalAlignment="Top">
             <MenuItem x:Name="mnuLoad" Header="Load from File" Click="mnuLoad_Click"/>
-            <MenuItem x:Name="mnuReset" Header="Reset Puzzle" Click="mnuReset_Click"/>
-            <MenuItem x:Name="mnuCheck" Header="Check Answer" Click="mnuCheck_Click"/>
             <MenuItem x:Name="mnuCreate" Header="Create Puzzle" Click="mnuCreate_Click"/>
         </Menu>
         <TabControl Name="tabWindow">
@@ -21,7 +19,24 @@
                 </Grid>
             </TabItem>
             <TabItem Name="tbiSolvePuzzle" Header="Solve">
-                <StackPanel Name="spMain"/>
+                <StackPanel Name="spMain">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Button Name="btnReset" Content="RESET" Padding="5" Margin="5" Click="btnReset_Click"/>
+                        <Button Name="btnCheck" Content="CHECK" Padding="5" Margin="5" Click="btnCheck_Click"/>
+                    </StackPanel>
+                    <TextBlock Text="Clues"/>
+                    <ListBox Name="lbClues2">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Path=WordDirection}" Width="95"/>
+                                    <TextBlock Text="{Binding Path=ClueNumber}" Width="95"/>
+                                    <TextBlock Text="{Binding Path=Clue}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
             </TabItem>
             <TabItem Name="tbiCreatePuzzle" Header="Create">
                 <Grid Background="#FFE5E5E5">
