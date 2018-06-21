@@ -52,6 +52,7 @@
                                 <Button Name="btnEDIT" Content="EDIT" Padding="5" Margin="5" Click="btnEDIT_Click"/>
                                 <Button Name="btnREMOVE" Content="REMOVE" Padding="5" Margin="5" Click="btnREMOVE_Click"/>
                             </StackPanel>
+                            <Button Name="btnDrawGrid" Content="DRAW PUZZLE" Padding="5" Margin="5" Click="btnDrawGrid_Click"/>
                             <!--grid-->
                         </StackPanel>
                     </StackPanel>

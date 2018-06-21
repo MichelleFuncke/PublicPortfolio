@@ -23,6 +23,7 @@ namespace Crossword
     public partial class MainWindow : Window
     {
         public Grid CrossWordGrid;
+        bool[,] ControlPresent;
         ObservableCollection<PuzzleWord> theList;
 
         public MainWindow()
@@ -52,6 +53,8 @@ namespace Crossword
             }
 
             CrossWordGrid.ShowGridLines = true;
+
+            ControlPresent = new bool[ColumnCount, RowCount];
         }
 
         private void Puzzle1(out int colCount, out int rowCount)
@@ -106,83 +109,29 @@ namespace Crossword
             theList.Add(new PuzzleWord("LEHAN", 6, "We're more than medicine", Direction.down.ToString(), 17, 4));
         }
 
-        private void PopulateGrid(int colCount, int rowCount)
-        {
-            bool[,] ControlPresent = new bool[colCount, rowCount];
-
-            //foreach word in puzzle
-            foreach (PuzzleWord word in theList)
-            {
-                int startCol = word.StartColumn;
-                int startRow = word.StartRow;
-
-                //determine the direction
-                int directionCol = Direction.across == word.WordDirection ? 1 : 0;
-                int directionRow = Direction.down == word.WordDirection ? 1 : 0;
-
-                //foreach character in the word
-                foreach (char letter in word.GetLetters())
-                {
-                    //Check the textbox doesn't exist
-                    if (ControlPresent[startCol, startRow])
-                    {
-                        //Check expected letter if the textbox does exist
-                        PuzzleLetter theBox = CrossWordGrid.Children.Cast<PuzzleLetter>().Where(i => (Grid.GetRow(i) == startRow) && (Grid.GetColumn(i) == startCol)).FirstOrDefault();
-
-                        //Check that the expected letter in the textbox is equal to the expected letter we were trying to add
-                        //If they aren't then the puzzle isn't valid and shouldn't be loaded
-                        if (letter != theBox.ExpectedLetter)
-                        {
-                            throw new Exception();
-                        }
-
-                        if ((HeaderTemp.GetDefaultNumber(theBox) == "") && ((startCol == word.StartColumn) && (startRow == word.StartRow)))
-                        {
-                            HeaderTemp.SetDefaultNumber(theBox, word.ClueNumber.ToString());
-                        }
-
-                        //move in the direction
-                        startCol += directionCol;
-                        startRow += directionRow;
-                    }
-                    else
-                    {
-                        string cornerNumber = "";
-                        if ((startCol == word.StartColumn) && (startRow == word.StartRow))
-                        {
-                            cornerNumber = word.ClueNumber.ToString();
-                        }
-                        //Create textbox if it doesn't already exist
-                        PuzzleLetter box = new PuzzleLetter(letter, cornerNumber);
-
-                        //determine the starting position
-                        Grid.SetColumn(box, startCol);
-                        Grid.SetRow(box, startRow);
-
-                        CrossWordGrid.Children.Add(box);
-                        ControlPresent[startCol, startRow] = true;
-
-                        //move in the direction
-                        startCol += directionCol;
-                        startRow += directionRow;
-                    }
-                }
-            }
-        }
-
         private void mnuLoad_Click(object sender, RoutedEventArgs e)
         {
+            tabWindow.SelectedItem = tbiSolvePuzzle;
+
             if (CrossWordGrid != null)
             {
                 return;
             }
 
             int colCount, rowCount;
-            Puzzle1(out colCount, out rowCount);
+            Puzzle2(out colCount, out rowCount);
 
-            PopulateGrid(colCount, rowCount);
+            List<PuzzleWord> invalidWords = new List<PuzzleWord>();
 
-            tabWindow.SelectedItem = tbiSolvePuzzle;
+            foreach (PuzzleWord word in theList)
+            {
+                DrawPuzzleWord(word, ControlPresent, invalidWords);
+            }
+
+            if (invalidWords.Count() > 0)
+            {
+                MessageBox.Show("Some words weren't drawn because they were invalid");
+            } 
         }
 
         private void mnuReset_Click(object sender, RoutedEventArgs e)
@@ -219,6 +168,7 @@ namespace Crossword
             } 
         }
 
+        #region Create puzzle
         private void mnuCreate_Click(object sender, RoutedEventArgs e)
         {
             tabWindow.SelectedItem = tbiCreatePuzzle;
@@ -230,9 +180,10 @@ namespace Crossword
             spMakePuzzle.Children.Add(CrossWordGrid);
 
             theList = new ObservableCollection<PuzzleWord>();
-            theList.Add(new PuzzleWord("FUNME", 2, "Excursions and Entertainment", Direction.across.ToString(), 1, 3));
-            theList.Add(new PuzzleWord("QUALITY", 1, "__ Mattress Warehouse. Get a free queen", Direction.down.ToString(), 1, 6));
-            theList.Add(new PuzzleWord("JAMRAH", 2, "Chicken Shawarma Meal Deal, $7.99", Direction.down.ToString(), 4, 1));
+            //theList.Add(new PuzzleWord("FUNME", 2, "Excursions and Entertainment", Direction.across.ToString(), 1, 3));
+            //theList.Add(new PuzzleWord("QUALITY", 1, "__ Mattress Warehouse. Get a free queen", Direction.down.ToString(), 1, 6));
+            //theList.Add(new PuzzleWord("JAMRAH", 2, "Chicken Shawarma Meal Deal, $7.99", Direction.down.ToString(), 4, 1));
+            //theList.Add(new PuzzleWord("LOSSCENTER", 3, "Sycamore Integrated Weight __ __.", Direction.down.ToString(), 8, 3));
 
             lbClues.ItemsSource = theList;
         }
@@ -250,16 +201,12 @@ namespace Crossword
 
         private void btnADD_Click(object sender, RoutedEventArgs e)
         {
-            //Add to the list
-            //theList.Add(new PuzzleWord("LOSSCENTER", 3, "Sycamore Integrated Weight __ __.", Direction.down.ToString(), 8, 3));
-
             var Pop = new AddWindow((int)udColumn.Value - 1, (int)udRow.Value - 1);
             if ((bool)Pop.ShowDialog())
             {
-                theList.Add(Pop.Word);
-            }
-
-            //Add to the grid
+                //Add the word to the list of words to draw
+                theList.Add(Pop.Word);    
+            } 
         }
 
         private void btnEDIT_Click(object sender, RoutedEventArgs e)
@@ -273,8 +220,126 @@ namespace Crossword
         {
             //Remove from the list
             theList.Remove(lbClues.SelectedItem as PuzzleWord);
-
-            //Remove from the grid
         }
+
+        private void btnDrawGrid_Click(object sender, RoutedEventArgs e)
+        {
+            //Empty the grid
+            CrossWordGrid.Children.Clear();
+
+            var colCount = CrossWordGrid.ColumnDefinitions.Count();
+            var rowCount = CrossWordGrid.RowDefinitions.Count();
+            ControlPresent = new bool[colCount, rowCount];
+
+            List<PuzzleWord> invalidWords = new List<PuzzleWord>();           
+
+            foreach (PuzzleWord word in theList)
+            {
+                DrawPuzzleWord(word, ControlPresent, invalidWords);
+            }
+
+            if (invalidWords.Count() > 0)
+            {
+                MessageBox.Show("Some words weren't drawn because they were invalid");
+            } 
+        }
+        #endregion
+
+        #region Draw the puzzle
+        private void DrawPuzzleWord(PuzzleWord word, bool[,] ControlPresent, List<PuzzleWord> invalidWords )
+        {
+            int startCol = word.StartColumn;
+            int startRow = word.StartRow;
+
+            //determine the direction
+            int directionCol = Direction.across == word.WordDirection ? 1 : 0;
+            int directionRow = Direction.down == word.WordDirection ? 1 : 0;
+
+            //Check whether the puzzleword will fit on the grid with the existing Puzzleboxes
+            if (PuzzleWordIsValid(ControlPresent, word, startCol, startRow, directionCol, directionRow))
+            {
+                //foreach character in the word
+                foreach (char letter in word.GetLetters())
+                {
+                    DrawLetterBox(ControlPresent, word, startCol, startRow, letter);
+
+                    //move in the direction
+                    startCol += directionCol;
+                    startRow += directionRow;
+                }
+            }
+            else
+            {
+                //Throw a warning for this invalid word
+                invalidWords.Add(word);
+            }
+        }
+
+        private void DrawLetterBox(bool[,] ControlPresent, PuzzleWord word, int startCol, int startRow, char letter)
+        {
+            //Check the textbox doesn't exist
+            if (ControlPresent[startCol, startRow])
+            {
+                EditExistingBox(word, startCol, startRow);
+            }
+            else
+            {
+                PuzzleLetter box = CreateNewBox(word, startCol, startRow, letter);
+
+                CrossWordGrid.Children.Add(box);
+                ControlPresent[startCol, startRow] = true;
+            }
+        }
+
+        private static PuzzleLetter CreateNewBox(PuzzleWord word, int startCol, int startRow, char letter)
+        {
+            string cornerNumber = "";
+            if ((startCol == word.StartColumn) && (startRow == word.StartRow))
+            {
+                cornerNumber = word.ClueNumber.ToString();
+            }
+            //Create textbox because it doesn't already exist
+            PuzzleLetter box = new PuzzleLetter(letter, cornerNumber);
+
+            //determine the starting position
+            Grid.SetColumn(box, startCol);
+            Grid.SetRow(box, startRow);
+            return box;
+        }
+
+        private void EditExistingBox(PuzzleWord word, int startCol, int startRow)
+        {
+            //Don't need to check if the expected letters are the same because we already checked them
+            PuzzleLetter theBox = CrossWordGrid.Children.Cast<PuzzleLetter>().Where(i => (Grid.GetRow(i) == startRow) && (Grid.GetColumn(i) == startCol)).FirstOrDefault();
+
+            if ((HeaderTemp.GetDefaultNumber(theBox) == "") && ((startCol == word.StartColumn) && (startRow == word.StartRow)))
+            {
+                HeaderTemp.SetDefaultNumber(theBox, word.ClueNumber.ToString());
+            }
+        }
+
+        private bool PuzzleWordIsValid(bool[,] ControlPresent, PuzzleWord word, int startCol, int startRow, int directionCol, int directionRow)
+        {
+            for (int i = 0; i < word.Length; i++)
+            {
+                if (ControlPresent[startCol + directionCol * i, startRow + directionRow * i])
+                {
+                    var tempC = startCol + directionCol * i;
+                    var tempR = startRow + directionRow * i;
+                    //Check expected letter if the textbox does exist
+                    PuzzleLetter theBox = CrossWordGrid.Children.Cast<PuzzleLetter>().Where(k => (Grid.GetRow(k) == tempR) && (Grid.GetColumn(k) == tempC)).FirstOrDefault();
+
+                    //Check that the expected letter in the textbox is equal to the expected letter we were trying to add
+                    //If they aren't then the puzzle isn't valid and shouldn't be loaded
+                    if (word.Word[i] != theBox.ExpectedLetter)
+                    {
+                        return false;
+                    }
+                }
+            }
+            //If there were no conflicts then the word should fit on the grid
+            return true;
+        }
+        #endregion
     }
 }
