@@ -31,7 +31,7 @@ namespace Crossword
             InitializeComponent();
         }
 
-        private void CreateGrid(int ColumnCount, int RowCount, int Size)
+        private void CreateGrid(int ColumnCount, int RowCount, int Size, Panel ParentControl)
         {
             CrossWordGrid = new Grid();
             CrossWordGrid.Background = new SolidColorBrush(Colors.Black);
@@ -55,15 +55,15 @@ namespace Crossword
             CrossWordGrid.ShowGridLines = true;
 
             ControlPresent = new bool[ColumnCount, RowCount];
+
+            ParentControl.Children.Add(CrossWordGrid);
         }
 
         private void Puzzle1(out int colCount, out int rowCount)
         {
             colCount = 18;
             rowCount = 9;
-            CreateGrid(colCount, rowCount, 50);
-
-            spMain.Children.Add(CrossWordGrid);
+            CreateGrid(colCount, rowCount, 50, spMain);
 
             //Read words from a file
             theList = new ObservableCollection<PuzzleWord>();
@@ -85,9 +85,7 @@ namespace Crossword
         {
             colCount = 18;
             rowCount = 13;
-            CreateGrid(colCount, rowCount, 50);
-
-            spMain.Children.Add(CrossWordGrid);
+            CreateGrid(colCount, rowCount, 50, spMain);
 
             //Read words from a file
             theList = new ObservableCollection<PuzzleWord>();
@@ -115,7 +113,8 @@ namespace Crossword
 
             if (CrossWordGrid != null)
             {
-                return;
+                //Can't just remove CrossWordGrid because it might be a new instance
+                spMain.Children.RemoveAt(spMain.Children.Count - 1);
             }
 
             int colCount, rowCount;
@@ -173,11 +172,21 @@ namespace Crossword
         {
             tabWindow.SelectedItem = tbiCreatePuzzle;
 
+            if (CrossWordGrid != null)
+            {
+                //Can't just remove CrossWordGrid because it might be a new instance
+
+                //Find the location of the button just before the grid
+                var buttonIndex = spMakePuzzle.Children.IndexOf(btnDrawGrid);
+                //Remove everything after this button
+                spMakePuzzle.Children.RemoveRange(buttonIndex + 1, 4);
+            }
+
             var colCount = 10;
             var rowCount = 10;
-            CreateGrid(colCount, rowCount, 40);
-
-            spMakePuzzle.Children.Add(CrossWordGrid);
+            CreateGrid(colCount, rowCount, 40, spMakePuzzle);
+            udColumn.Value = colCount;
+            udRow.Value = rowCount;
 
             theList = new ObservableCollection<PuzzleWord>();
             //theList.Add(new PuzzleWord("FUNME", 2, "Excursions and Entertainment", Direction.across.ToString(), 1, 3));
@@ -195,8 +204,7 @@ namespace Crossword
 
             spMakePuzzle.Children.Remove(CrossWordGrid);
 
-            CreateGrid(col, row, 40);
-            spMakePuzzle.Children.Add(CrossWordGrid);
+            CreateGrid(col, row, 40, spMakePuzzle);
         }
 
         private void btnADD_Click(object sender, RoutedEventArgs e)
@@ -322,12 +330,18 @@ namespace Crossword
         {
             for (int i = 0; i < word.Length; i++)
             {
-                if (ControlPresent[startCol + directionCol * i, startRow + directionRow * i])
+                var currentCol = startCol + directionCol * i;
+                var currentRow = startRow + directionRow * i;
+
+                if ((currentCol >= ControlPresent.GetLength(0)) || (currentRow >= ControlPresent.GetLength(1)))
                 {
-                    var tempC = startCol + directionCol * i;
-                    var tempR = startRow + directionRow * i;
+                    return false;
+                }
+
+                if (ControlPresent[currentCol, currentRow])
+                {
                     //Check expected letter if the textbox does exist
-                    PuzzleLetter theBox = CrossWordGrid.Children.Cast<PuzzleLetter>().Where(k => (Grid.GetRow(k) == tempR) && (Grid.GetColumn(k) == tempC)).FirstOrDefault();
+                    PuzzleLetter theBox = CrossWordGrid.Children.Cast<PuzzleLetter>().Where(k => (Grid.GetRow(k) == currentRow) && (Grid.GetColumn(k) == currentCol)).FirstOrDefault();
 
                     //Check that the expected letter in the textbox is equal to the expected letter we were trying to add
                     //If they aren't then the puzzle isn't valid and shouldn't be loaded
