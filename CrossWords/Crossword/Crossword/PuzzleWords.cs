@@ -7,6 +7,9 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows;
 using System.ComponentModel;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Xml;
 
 namespace Crossword
 {
@@ -14,6 +17,102 @@ namespace Crossword
     {
         across,
         down,
+    }
+
+    public class CrossWord
+    {
+        public int Columns { get; set; }
+        public int Rows { get; set; }
+
+        public ObservableCollection<PuzzleWord> Words { get; set; }
+
+        public CrossWord(int column, int row)
+        {
+            Columns = column;
+            Rows = row;
+            Words = new ObservableCollection<PuzzleWord>();
+        }
+
+        public CrossWord(FileInfo file)
+        {
+            Words = new ObservableCollection<PuzzleWord>();
+
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.Load(file.FullName);
+
+            //get root element of document
+            XmlElement root = xmlDoc.DocumentElement;
+
+            ReadGridSize(root);
+
+            ReadWords(root);
+        }
+
+        private void ReadGridSize(XmlElement root)
+        {
+            Columns = int.Parse(root.Attributes.GetNamedItem("numC").Value);
+            Rows = int.Parse(root.Attributes.GetNamedItem("numR").Value);
+        }
+
+        private void ReadWords(XmlElement root)
+        {
+            //select all elements under the Default node
+            XmlNodeList nodeList = root.ChildNodes;
+
+            if (nodeList.Count == 0)
+            {
+                throw new Exception("The crossword file isn't formatted correctly.");
+            }
+
+            //loop through the nodelist
+            foreach (XmlNode item in nodeList)
+            {
+                var word = item.Attributes.GetNamedItem("value").Value;
+                var number = int.Parse(item.Attributes.GetNamedItem("number").Value);
+                var clue = item.Attributes.GetNamedItem("clue").Value;
+                var direction = item.Attributes.GetNamedItem("direction").Value;
+                var startC = int.Parse(item.Attributes.GetNamedItem("startC").Value);
+                var startR = int.Parse(item.Attributes.GetNamedItem("startR").Value);
+
+                Words.Add(new PuzzleWord(word, number, clue, direction, startC, startR));
+            }
+        }
+
+        public void Add(PuzzleWord newWord)
+        {
+            Words.Add(newWord);
+        }
+
+        public void Sort()
+        {
+            Words.MySort();
+        }
+
+        public void Save(FileInfo file)
+        {
+            XmlDocument xmlDoc = new XmlDocument();
+            XmlElement root = xmlDoc.CreateElement("crossword");
+
+            root.SetAttribute("numC", Columns.ToString());
+            root.SetAttribute("numR", Rows.ToString());
+
+            foreach (PuzzleWord item in Words)
+            {
+                XmlElement word = xmlDoc.CreateElement("word");
+                word.SetAttribute("number", item.ClueNumber.ToString());
+                word.SetAttribute("value", item.Word);
+                word.SetAttribute("clue", item.Clue);
+                word.SetAttribute("direction", item.WordDirection.ToString());
+                word.SetAttribute("startC", item.StartColumn.ToString());
+                word.SetAttribute("startR", item.StartRow.ToString());
+
+                root.AppendChild(word);
+            }
+
+            xmlDoc.AppendChild(root);
+
+            xmlDoc.Save(file.FullName);
+        }
     }
 
     public class PuzzleWord : INotifyPropertyChanged
@@ -56,7 +155,6 @@ namespace Crossword
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-
         public PuzzleWord(string word, int cluenumber, string clue, string direction, int startC, int startR)
         {
             Word = word;
@@ -90,7 +188,7 @@ namespace Crossword
 
         public PuzzleLetter(char expectedLetter, string defaultNumber="")
         {
-            ExpectedLetter = expectedLetter;
+            ExpectedLetter = Char.ToUpper(expectedLetter);
 
             this.Style = (Style)FindResource("TextBoxStyle");
             HeaderTemp.SetDefaultNumber(this, defaultNumber);

@@ -1,0 +1,4 @@
+<crossword numC="5" numR="5">
+	<word number="1" value="hello" clue="" direction="across" startC="0" startR="0"/>
+	<word number="1" value="hi" clue="" direction="down" startC="0" startR="0"/>
+</crossword>

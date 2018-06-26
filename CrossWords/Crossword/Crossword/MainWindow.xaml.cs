@@ -1,7 +1,9 @@
 ﻿using Crossword.PopupWindows;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml.Serialization;
 
 namespace Crossword
 {
@@ -25,6 +28,8 @@ namespace Crossword
         public Grid CrossWordGrid;
         bool[,] ControlPresent;
         ObservableCollection<PuzzleWord> theList;
+
+        CrossWord Puzzle;
 
         public MainWindow()
         {
@@ -60,52 +65,44 @@ namespace Crossword
         }
 
         #region Ready puzzles
-        private void Puzzle1(out int colCount, out int rowCount)
+        private void Puzzle1()
         {
-            colCount = 18;
-            rowCount = 9;
-            CreateGrid(colCount, rowCount, 50, spMain);
+            Puzzle = new CrossWord(18, 9);
 
-            //Read words from a file
-            theList = new ObservableCollection<PuzzleWord>();
             //across
-            theList.Add(new PuzzleWord("MOTORWORKS", 1, "Get a $13.95 oil charge", Direction.across.ToString(), 8, 2));
-            theList.Add(new PuzzleWord("CARPETLANDUSA", 2, "With your tax refund get carpet", Direction.across.ToString(), 0, 4));
-            theList.Add(new PuzzleWord("CULVERS", 3, "Remodeling to serve you better", Direction.across.ToString(), 0, 6));
-            theList.Add(new PuzzleWord("HEWITT", 4, "Jackson ____. Pay $50 less this year", Direction.across.ToString(), 12, 6));
-            theList.Add(new PuzzleWord("VINNYSPIZZA", 5, "Home of the 24\" hurricane pizza", Direction.across.ToString(), 4, 8));
+            Puzzle.Add(new PuzzleWord("MOTORWORKS", 1, "Get a $13.95 oil charge", Direction.across.ToString(), 8, 2));
+            Puzzle.Add(new PuzzleWord("CULVERS", 3, "Remodeling to serve you better", Direction.across.ToString(), 0, 6));
+            Puzzle.Add(new PuzzleWord("HEWITT", 4, "Jackson ____. Pay $50 less this year", Direction.across.ToString(), 12, 6));
+            Puzzle.Add(new PuzzleWord("VINNYSPIZZA", 5, "Home of the 24\" hurricane pizza", Direction.across.ToString(), 4, 8));
+            Puzzle.Add(new PuzzleWord("CARPETLANDUSA", 2, "With your tax refund get carpet", Direction.across.ToString(), 0, 4));
 
             //down
-            theList.Add(new PuzzleWord("BELLAS", 1, "Featuring a \"Fairy Dust Fun Station\"", Direction.down.ToString(), 6, 1));
-            theList.Add(new PuzzleWord("GIORDANOS", 2, "\"Love Takes Many Forms\"", Direction.down.ToString(), 9, 0));
-            theList.Add(new PuzzleWord("ROSS", 3, "Hanser ___. A leader in eye care", Direction.down.ToString(), 11, 1));
-            theList.Add(new PuzzleWord("MIKIMOTO", 4, "Japanese steakhouse in Dekalls featuring hibachi dinners", Direction.down.ToString(), 16, 0));
+            Puzzle.Add(new PuzzleWord("GIORDANOS", 2, "\"Love Takes Many Forms\"", Direction.down.ToString(), 9, 0));
+            Puzzle.Add(new PuzzleWord("ROSS", 3, "Hanser ___. A leader in eye care", Direction.down.ToString(), 11, 1));
+            Puzzle.Add(new PuzzleWord("MIKIMOTO", 4, "Japanese steakhouse in Dekalls featuring hibachi dinners", Direction.down.ToString(), 16, 0));
+            Puzzle.Add(new PuzzleWord("BELLAS", 1, "Featuring a \"Fairy Dust Fun Station\"", Direction.down.ToString(), 6, 1));
         }
 
-        private void Puzzle2(out int colCount, out int rowCount)
+        private void Puzzle2()
         {
-            colCount = 18;
-            rowCount = 13;
-            CreateGrid(colCount, rowCount, 50, spMain);
+            Puzzle = new CrossWord(18, 13);
 
-            //Read words from a file
-            theList = new ObservableCollection<PuzzleWord>();
             //across
-            theList.Add(new PuzzleWord("ULLRICH", 1, "__ Law, Estate Planning, Wills, Trusts, Elder law", Direction.across.ToString(), 10, 2));
-            theList.Add(new PuzzleWord("FUNME", 2, "Excursions and Entertainment", Direction.across.ToString(), 1, 3));
-            theList.Add(new PuzzleWord("DENTAL", 3, "__ Fields. Family & Cosmetic Dentistry", Direction.across.ToString(), 12, 4));
-            theList.Add(new PuzzleWord("GARLISCH", 4, "__ Automotive Services, Inc, $13.50 oil change", Direction.across.ToString(), 3, 5));
-            theList.Add(new PuzzleWord("MEDITERRANEO", 5, "Middle Eastern Sunday Buffet $11.95", Direction.across.ToString(), 3, 8));
-            theList.Add(new PuzzleWord("KISHHEALTHSYSTEM", 6, "Now part of Northwestern Medicine", Direction.across.ToString(), 0, 10));
-            theList.Add(new PuzzleWord("RUBYSASIAN", 7, "__ __ Market & Other Importal Goods", Direction.across.ToString(), 8, 12));
+            Puzzle.Add(new PuzzleWord("ULLRICH", 1, "__ Law, Estate Planning, Wills, Trusts, Elder law", Direction.across.ToString(), 10, 2));
+            Puzzle.Add(new PuzzleWord("DENTAL", 3, "__ Fields. Family & Cosmetic Dentistry", Direction.across.ToString(), 12, 4));
+            Puzzle.Add(new PuzzleWord("GARLISCH", 4, "__ Automotive Services, Inc, $13.50 oil change", Direction.across.ToString(), 3, 5));
+            Puzzle.Add(new PuzzleWord("FUNME", 2, "Excursions and Entertainment", Direction.across.ToString(), 1, 3));
+            Puzzle.Add(new PuzzleWord("MEDITERRANEO", 5, "Middle Eastern Sunday Buffet $11.95", Direction.across.ToString(), 3, 8));
+            Puzzle.Add(new PuzzleWord("KISHHEALTHSYSTEM", 6, "Now part of Northwestern Medicine", Direction.across.ToString(), 0, 10));
+            Puzzle.Add(new PuzzleWord("RUBYSASIAN", 7, "__ __ Market & Other Importal Goods", Direction.across.ToString(), 8, 12));
 
             //down
-            theList.Add(new PuzzleWord("QUALITY", 1, "__ Mattress Warehouse. Get a free queen", Direction.down.ToString(), 1, 6));
-            theList.Add(new PuzzleWord("JAMRAH", 2, "Chicken Shawarma Meal Deal, $7.99", Direction.down.ToString(), 4, 1));
-            theList.Add(new PuzzleWord("LOSSCENTER", 3, "Sycamore Integrated Weight __ __.", Direction.down.ToString(), 8, 3));
-            theList.Add(new PuzzleWord("MULCHWORKS", 4, "Where hundreds receive great service every year", Direction.down.ToString(), 10, 1));
-            theList.Add(new PuzzleWord("HARVEST", 5, "__ Bible Chapel. Good Friday 7pm", Direction.down.ToString(), 13, 0));
-            theList.Add(new PuzzleWord("LEHAN", 6, "We're more than medicine", Direction.down.ToString(), 17, 4));
+            Puzzle.Add(new PuzzleWord("JAMRAH", 2, "Chicken Shawarma Meal Deal, $7.99", Direction.down.ToString(), 4, 1));
+            Puzzle.Add(new PuzzleWord("LOSSCENTER", 3, "Sycamore Integrated Weight __ __.", Direction.down.ToString(), 8, 3));
+            Puzzle.Add(new PuzzleWord("MULCHWORKS", 4, "Where hundreds receive great service every year", Direction.down.ToString(), 10, 1));
+            Puzzle.Add(new PuzzleWord("HARVEST", 5, "__ Bible Chapel. Good Friday 7pm", Direction.down.ToString(), 13, 0));
+            Puzzle.Add(new PuzzleWord("LEHAN", 6, "We're more than medicine", Direction.down.ToString(), 17, 4));
+            Puzzle.Add(new PuzzleWord("QUALITY", 1, "__ Mattress Warehouse. Get a free queen", Direction.down.ToString(), 1, 6));
         }
         #endregion
 
@@ -287,7 +284,7 @@ namespace Crossword
 
                     //Check that the expected letter in the textbox is equal to the expected letter we were trying to add
                     //If they aren't then the puzzle isn't valid and shouldn't be loaded
-                    if (word.Word[i] != theBox.ExpectedLetter)
+                    if (Char.ToUpper(word.Word[i]) != theBox.ExpectedLetter)
                     {
                         return false;
                     }
@@ -313,22 +310,32 @@ namespace Crossword
                 spMain.Children.RemoveRange(cluesIndex + 1, 4);
             }
 
-            int colCount, rowCount;
-            Puzzle2(out colCount, out rowCount);
+            OpenFileDialog openFile = new OpenFileDialog();
+            openFile.Title = "Open CrossWord";
+            openFile.Filter = "eXtensible Markup Language file|*.xml";
 
-            List<PuzzleWord> invalidWords = new List<PuzzleWord>();
-
-            foreach (PuzzleWord word in theList)
+            if ((bool)openFile.ShowDialog())
             {
-                DrawPuzzleWord(word, ControlPresent, invalidWords);
-            }
+                var file = new FileInfo(openFile.FileName);
+                Puzzle = new CrossWord(file);
+                Puzzle.Sort();
 
-            if (invalidWords.Count() > 0)
-            {
-                MessageBox.Show("Some words weren't drawn because they were invalid");
-            }
+                CreateGrid(Puzzle.Columns, Puzzle.Rows, 50, spMain);
 
-            lbClues2.ItemsSource = theList;
+                List<PuzzleWord> invalidWords = new List<PuzzleWord>();
+
+                foreach (PuzzleWord word in Puzzle.Words)
+                {
+                    DrawPuzzleWord(word, ControlPresent, invalidWords);
+                }
+
+                if (invalidWords.Count() > 0)
+                {
+                    MessageBox.Show("Some words weren't drawn because they were invalid");
+                }
+
+                lbClues2.ItemsSource = Puzzle.Words;
+            } 
         }
 
         private void btnReset_Click(object sender, RoutedEventArgs e)
@@ -365,5 +372,23 @@ namespace Crossword
             }
         }
         #endregion
+
+        private void mnuSave_Click(object sender, RoutedEventArgs e)
+        {
+            if (Puzzle == null)
+            {
+                return;
+            }
+
+            SaveFileDialog saveFile = new SaveFileDialog();
+            saveFile.Title = "Save CrossWord";
+            saveFile.Filter = "eXtensible Markup Language file|*.xml";
+
+            if ((bool)saveFile.ShowDialog())
+            {
+                var file = new FileInfo(saveFile.FileName);
+                Puzzle.Save(file);
+            }  
+        }
     }
 }

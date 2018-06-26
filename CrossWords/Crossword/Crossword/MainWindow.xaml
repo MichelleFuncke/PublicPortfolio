@@ -11,6 +11,7 @@
         <Menu HorizontalAlignment="Left" Height="21" VerticalAlignment="Top">
             <MenuItem x:Name="mnuLoad" Header="Load from File" Click="mnuLoad_Click"/>
             <MenuItem x:Name="mnuCreate" Header="Create Puzzle" Click="mnuCreate_Click"/>
+            <MenuItem Name="mnuSave" Header="Save Puzzle" Click="mnuSave_Click"/>
         </Menu>
         <TabControl Name="tabWindow">
             <TabItem Name="tbiMainPage" Header="Main Page">

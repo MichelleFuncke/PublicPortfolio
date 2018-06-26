@@ -72,6 +72,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Extensions.cs" />
     <Compile Include="HeaderTemp.cs" />
     <Compile Include="PopupWindows\AddWindow.xaml.cs">
       <DependentUpon>AddWindow.xaml</DependentUpon>
