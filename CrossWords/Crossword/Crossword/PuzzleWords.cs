@@ -29,16 +29,16 @@ namespace Crossword
         public bool[,] ControlPresent { get; set; }
         public List<PuzzleWord> InvalidWords { get; set; }
 
-        public CrossWord(int column, int row, int size)
+        public CrossWord(int column, int row, int size, bool gridLines = false)
         {
             Columns = column;
             Rows = row;
             Words = new ObservableCollection<PuzzleWord>();
 
-            CreateGrid(size);
+            CreateGrid(size, gridLines);
         }
 
-        public CrossWord(FileInfo file, int size)
+        public CrossWord(FileInfo file, int size, bool gridLines = false)
         {
             Words = new ObservableCollection<PuzzleWord>();
 
@@ -52,7 +52,7 @@ namespace Crossword
 
             ReadWords(root);
 
-            CreateGrid(size);
+            CreateGrid(size, gridLines);
         }
 
         private void ReadGridSize(XmlElement root)
@@ -88,6 +88,11 @@ namespace Crossword
         public void Add(PuzzleWord newWord)
         {
             Words.Add(newWord);
+        }
+
+        public void Remove(PuzzleWord oldword)
+        {
+            Words.Remove(oldword);
         }
 
         public void Sort()
@@ -145,6 +150,14 @@ namespace Crossword
             ControlPresent = new bool[Columns, Rows];
 
             TheGrid.ShowGridLines = gridLines;
+        }
+
+        public void ResizeGrid(int newColumn, int newRow, int newSize, bool gridLines = false)
+        {
+            Columns = newColumn;
+            Rows = newRow;
+
+            CreateGrid(newSize, gridLines);
         }
 
         public void DrawPuzzle()
@@ -256,6 +269,13 @@ namespace Crossword
             {
                 HeaderTemp.SetDefaultNumber(theBox, word.ClueNumber.ToString());
             }
+        }
+
+        public void ClearGrid()
+        {
+            TheGrid.Children.Clear();
+            ControlPresent = new bool[Columns, Rows];
+            InvalidWords?.Clear();
         }
     }
 
