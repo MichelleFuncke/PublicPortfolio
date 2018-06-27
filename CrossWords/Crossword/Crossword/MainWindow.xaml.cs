@@ -67,7 +67,7 @@ namespace Crossword
         #region Ready puzzles
         private void Puzzle1()
         {
-            Puzzle = new CrossWord(18, 9);
+            Puzzle = new CrossWord(18, 9, 50);
 
             //across
             Puzzle.Add(new PuzzleWord("MOTORWORKS", 1, "Get a $13.95 oil charge", Direction.across.ToString(), 8, 2));
@@ -85,7 +85,7 @@ namespace Crossword
 
         private void Puzzle2()
         {
-            Puzzle = new CrossWord(18, 13);
+            Puzzle = new CrossWord(18, 13, 50);
 
             //across
             Puzzle.Add(new PuzzleWord("ULLRICH", 1, "__ Law, Estate Planning, Wills, Trusts, Elder law", Direction.across.ToString(), 10, 2));
@@ -300,14 +300,15 @@ namespace Crossword
         {
             tabWindow.SelectedItem = tbiSolvePuzzle;
 
-            if (CrossWordGrid != null)
+            if (Puzzle != null)
             {
-                //Can't just remove CrossWordGrid because it might be a new instance
+                //Can't just remove Puzzle.TheGrid because it might be a new instance
 
                 //Find the location of the button just before the grid
                 var cluesIndex = spMain.Children.IndexOf(lbClues2);
                 //Remove everything after this button
                 spMain.Children.RemoveRange(cluesIndex + 1, 4);
+                lbClues2.ItemsSource = null;
             }
 
             OpenFileDialog openFile = new OpenFileDialog();
@@ -317,19 +318,15 @@ namespace Crossword
             if ((bool)openFile.ShowDialog())
             {
                 var file = new FileInfo(openFile.FileName);
-                Puzzle = new CrossWord(file);
+                Puzzle = new CrossWord(file, 50);
                 Puzzle.Sort();
 
-                CreateGrid(Puzzle.Columns, Puzzle.Rows, 50, spMain);
+                //CreateGrid(Puzzle.Columns, Puzzle.Rows, 50, spMain);
+                spMain.Children.Add(Puzzle.TheGrid);
 
-                List<PuzzleWord> invalidWords = new List<PuzzleWord>();
+                Puzzle.DrawPuzzle();
 
-                foreach (PuzzleWord word in Puzzle.Words)
-                {
-                    DrawPuzzleWord(word, ControlPresent, invalidWords);
-                }
-
-                if (invalidWords.Count() > 0)
+                if (Puzzle.InvalidWords.Count() > 0)
                 {
                     MessageBox.Show("Some words weren't drawn because they were invalid");
                 }

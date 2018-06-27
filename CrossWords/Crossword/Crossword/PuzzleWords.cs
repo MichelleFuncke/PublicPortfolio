@@ -25,15 +25,20 @@ namespace Crossword
         public int Rows { get; set; }
 
         public ObservableCollection<PuzzleWord> Words { get; set; }
+        public Grid TheGrid { get; set; }
+        public bool[,] ControlPresent { get; set; }
+        public List<PuzzleWord> InvalidWords { get; set; }
 
-        public CrossWord(int column, int row)
+        public CrossWord(int column, int row, int size)
         {
             Columns = column;
             Rows = row;
             Words = new ObservableCollection<PuzzleWord>();
+
+            CreateGrid(size);
         }
 
-        public CrossWord(FileInfo file)
+        public CrossWord(FileInfo file, int size)
         {
             Words = new ObservableCollection<PuzzleWord>();
 
@@ -46,6 +51,8 @@ namespace Crossword
             ReadGridSize(root);
 
             ReadWords(root);
+
+            CreateGrid(size);
         }
 
         private void ReadGridSize(XmlElement root)
@@ -112,6 +119,143 @@ namespace Crossword
             xmlDoc.AppendChild(root);
 
             xmlDoc.Save(file.FullName);
+        }
+
+        private void CreateGrid(int Size, bool gridLines = false)
+        {
+            TheGrid = new Grid();
+            TheGrid.Background = new SolidColorBrush(Colors.Black);
+
+            for (int i = 0; i < Columns; i++)
+            {
+                ColumnDefinition Col = new ColumnDefinition();
+                Col.Width = new GridLength(Size);
+
+                TheGrid.ColumnDefinitions.Add(Col);
+            }
+
+            for (int i = 0; i < Rows; i++)
+            {
+                RowDefinition Row = new RowDefinition();
+                Row.Height = new GridLength(Size);
+
+                TheGrid.RowDefinitions.Add(Row);
+            }
+
+            ControlPresent = new bool[Columns, Rows];
+
+            TheGrid.ShowGridLines = gridLines;
+        }
+
+        public void DrawPuzzle()
+        {
+            InvalidWords = new List<PuzzleWord>();
+
+            foreach (PuzzleWord word in Words)
+            {
+                DrawPuzzleWord(word);
+            }
+        }
+
+        public void DrawPuzzleWord(PuzzleWord word)
+        {
+            int startCol = word.StartColumn;
+            int startRow = word.StartRow;
+
+            //determine the direction
+            int directionCol = Direction.across == word.WordDirection ? 1 : 0;
+            int directionRow = Direction.down == word.WordDirection ? 1 : 0;
+
+            //Check whether the puzzleword will fit on the grid with the existing Puzzleboxes
+            if (PuzzleWordIsValid(word, startCol, startRow, directionCol, directionRow))
+            {
+                //foreach character in the word
+                foreach (char letter in word.GetLetters())
+                {
+                    DrawLetterBox(word, startCol, startRow, letter);
+
+                    //move in the direction
+                    startCol += directionCol;
+                    startRow += directionRow;
+                }
+            }
+            else
+            {
+                //Throw a warning for this invalid word
+                InvalidWords.Add(word);
+            }
+        }
+
+        private bool PuzzleWordIsValid(PuzzleWord word, int startCol, int startRow, int directionCol, int directionRow)
+        {
+            for (int i = 0; i < word.Length; i++)
+            {
+                var currentCol = startCol + directionCol * i;
+                var currentRow = startRow + directionRow * i;
+
+                if ((currentCol >= ControlPresent.GetLength(0)) || (currentRow >= ControlPresent.GetLength(1)))
+                {
+                    return false;
+                }
+
+                if (ControlPresent[currentCol, currentRow])
+                {
+                    //Check expected letter if the textbox does exist
+                    PuzzleLetter theBox = TheGrid.Children.Cast<PuzzleLetter>().Where(k => (Grid.GetRow(k) == currentRow) && (Grid.GetColumn(k) == currentCol)).FirstOrDefault();
+
+                    //Check that the expected letter in the textbox is equal to the expected letter we were trying to add
+                    //If they aren't then the puzzle isn't valid and shouldn't be loaded
+                    if (Char.ToUpper(word.Word[i]) != theBox.ExpectedLetter)
+                    {
+                        return false;
+                    }
+                }
+            }
+            //If there were no conflicts then the word should fit on the grid
+            return true;
+        }
+
+        private void DrawLetterBox(PuzzleWord word, int startCol, int startRow, char letter)
+        {
+            //Check the textbox doesn't exist
+            if (ControlPresent[startCol, startRow])
+            {
+                EditExistingBox(word, startCol, startRow);
+            }
+            else
+            {
+                PuzzleLetter box = CreateNewBox(word, startCol, startRow, letter);
+
+                TheGrid.Children.Add(box);
+                ControlPresent[startCol, startRow] = true;
+            }
+        }
+
+        private static PuzzleLetter CreateNewBox(PuzzleWord word, int startCol, int startRow, char letter)
+        {
+            string cornerNumber = "";
+            if ((startCol == word.StartColumn) && (startRow == word.StartRow))
+            {
+                cornerNumber = word.ClueNumber.ToString();
+            }
+            //Create textbox because it doesn't already exist
+            PuzzleLetter box = new PuzzleLetter(letter, cornerNumber);
+
+            //determine the starting position
+            Grid.SetColumn(box, startCol);
+            Grid.SetRow(box, startRow);
+            return box;
+        }
+
+        private void EditExistingBox(PuzzleWord word, int startCol, int startRow)
+        {
+            //Don't need to check if the expected letters are the same because we already checked them
+            PuzzleLetter theBox = TheGrid.Children.Cast<PuzzleLetter>().Where(i => (Grid.GetRow(i) == startRow) && (Grid.GetColumn(i) == startCol)).FirstOrDefault();
+
+            if ((HeaderTemp.GetDefaultNumber(theBox) == "") && ((startCol == word.StartColumn) && (startRow == word.StartRow)))
+            {
+                HeaderTemp.SetDefaultNumber(theBox, word.ClueNumber.ToString());
+            }
         }
     }
 
