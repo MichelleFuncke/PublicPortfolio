@@ -111,7 +111,7 @@ namespace Crossword
 
         private void btnADD_Click(object sender, RoutedEventArgs e)
         {
-            var Pop = new AddWindow((int)udColumn.Value - 1, (int)udRow.Value - 1);
+            var Pop = new AddWindow((int)udColumn.Value, (int)udRow.Value);
             if ((bool)Pop.ShowDialog())
             {
                 //Add the word to the list of words to draw
@@ -122,8 +122,12 @@ namespace Crossword
         private void btnEDIT_Click(object sender, RoutedEventArgs e)
         {
             //Edit an existing clue
-            theList[0].Clue = "Excursions";
-            theList[0].ClueNumber = 4;
+            var word = lbClues.SelectedItem as PuzzleWord;
+            var Pop = new EditWindow(word, (int)udColumn.Value, (int)udRow.Value);
+            if ((bool)Pop.ShowDialog())
+            {
+                word.Populate(Pop.Word);
+            }
         }
 
         private void btnREMOVE_Click(object sender, RoutedEventArgs e)

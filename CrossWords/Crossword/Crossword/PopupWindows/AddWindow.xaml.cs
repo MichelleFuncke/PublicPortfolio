@@ -24,12 +24,23 @@ namespace Crossword.PopupWindows
         public AddWindow(int maxCol, int maxRow)
         {
             InitializeComponent();
+            WindowSetup();
 
             cboDirections.ItemsSource = Enum.GetValues(typeof(Direction));
             cboDirections.SelectedIndex = 0;
 
-            udColumn.Maximum = maxCol;
-            udRow.Maximum = maxRow;
+            udColumn.Maximum = maxCol - 1;
+            udRow.Maximum = maxRow - 1;
+        }
+
+        private void WindowSetup()
+        {
+            InitializeComponent();
+
+            Application curApp = Application.Current;
+            Window mainWindow = curApp.MainWindow;
+            this.Left = mainWindow.Left + (mainWindow.Width - this.Width) / 2;
+            this.Top = mainWindow.Top + (mainWindow.Height - this.Height) / 2;
         }
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
@@ -38,7 +49,7 @@ namespace Crossword.PopupWindows
             {
                 int number = 1;
                 int.TryParse(tbxNumber.Text, out number);
-                Word = new PuzzleWord(tbxWord.Text, number, tbxClue.Text, cboDirections.SelectedValue.ToString(), (int)udColumn.Value - 1, (int)udRow.Value - 1);
+                Word = new PuzzleWord(tbxWord.Text, number, tbxClue.Text, cboDirections.SelectedValue.ToString(), (int)udColumn.Value, (int)udRow.Value);
 
                 this.DialogResult = true;
                 this.Close();

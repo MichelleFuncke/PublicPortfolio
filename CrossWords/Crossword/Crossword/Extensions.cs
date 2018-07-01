@@ -21,12 +21,5 @@ namespace Crossword
                 collection.Add(b);
             }
         }
-
-        public static void ReadPuzzle(FileInfo file)
-        {
-            
-        }
-
-
     }
 }

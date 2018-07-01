@@ -283,6 +283,9 @@ namespace Crossword
     {
         private int _clueNumber;
         private String _clue;
+        private int _startC;
+        private int _startR;
+        private Direction _direction;
 
         public String Word { get; private set; }
         public int Length { get; private set; }
@@ -309,9 +312,31 @@ namespace Crossword
             }
         }
 
-        public Direction WordDirection { get; private set; }
-        public int StartColumn { get; private set; }
-        public int StartRow { get; private set; }
+        public Direction WordDirection
+        {
+            get { return _direction; }
+            set
+            {
+                _direction = value;
+                OnPropertyChanged("WordDirection");
+            }
+        }
+        public int StartColumn {
+            get { return _startC; }
+            set
+            {
+                _startC = value;
+                OnPropertyChanged("StartColumn");
+            }
+        }
+        public int StartRow {
+            get { return _startR; }
+            set
+            {
+                _startR = value;
+                OnPropertyChanged("StartRow");
+            }
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(string propertyName)
@@ -338,6 +363,20 @@ namespace Crossword
             {
                 yield return item;
             }
+        }
+
+        public PuzzleWord Copy()
+        {
+            return new PuzzleWord(Word, ClueNumber, Clue, WordDirection.ToString(), StartColumn, StartRow);
+        }
+
+        public void Populate(PuzzleWord values)
+        {
+            ClueNumber = values.ClueNumber;
+            Clue = values.Clue;
+            WordDirection = values.WordDirection;
+            StartColumn = values.StartColumn;
+            StartRow = values.StartRow;
         }
     }
 

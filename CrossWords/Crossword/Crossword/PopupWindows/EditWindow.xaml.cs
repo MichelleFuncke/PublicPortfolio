@@ -19,9 +19,35 @@ namespace Crossword.PopupWindows
     /// </summary>
     public partial class EditWindow : Window
     {
-        public EditWindow()
+        public PuzzleWord Word { get; set; }
+
+        public EditWindow(PuzzleWord theWord, int maxCol, int maxRow)
         {
             InitializeComponent();
+            Word = theWord.Copy();
+            WindowSetup();
+
+            udColumn.Maximum = maxCol - 1;
+            udRow.Maximum = maxRow - 1;
+
+            cboDirections.ItemsSource = Enum.GetValues(typeof(Direction));
+        }
+
+        private void WindowSetup()
+        {
+            InitializeComponent();
+            this.DataContext = Word;
+
+            Application curApp = Application.Current;
+            Window mainWindow = curApp.MainWindow;
+            this.Left = mainWindow.Left + (mainWindow.Width - this.Width) / 2;
+            this.Top = mainWindow.Top + (mainWindow.Height - this.Height) / 2;
+        }
+
+        private void btnSave_Click(object sender, RoutedEventArgs e)
+        {
+            this.DialogResult = true;
+            this.Close();
         }
     }
 }
