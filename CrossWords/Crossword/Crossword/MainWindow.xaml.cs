@@ -30,6 +30,12 @@ namespace Crossword
         public MainWindow()
         {
             InitializeComponent();
+
+            //I want the tab strip to be invisible
+            foreach (TabItem item in tabWindow.Items)
+            {
+                item.Visibility = Visibility.Collapsed;
+            }
         }
 
         #region Ready puzzles
@@ -112,11 +118,14 @@ namespace Crossword
         private void btnADD_Click(object sender, RoutedEventArgs e)
         {
             var Pop = new AddWindow((int)udColumn.Value, (int)udRow.Value);
+            Pop.Owner = this;
             if ((bool)Pop.ShowDialog())
             {
                 //Add the word to the list of words to draw
                 Puzzle.Add(Pop.Word);   
-            } 
+            }
+
+            mnuSave.IsEnabled = lbClues.Items.Count > 0;
         }
 
         private void btnEDIT_Click(object sender, RoutedEventArgs e)
@@ -124,29 +133,43 @@ namespace Crossword
             //Edit an existing clue
             var word = lbClues.SelectedItem as PuzzleWord;
             var Pop = new EditWindow(word, (int)udColumn.Value, (int)udRow.Value);
+            Pop.Owner = this;
             if ((bool)Pop.ShowDialog())
             {
-                word.Populate(Pop.Word);
+                word.PopulateFrom(Pop.Word);
             }
+
+            mnuSave.IsEnabled = lbClues.Items.Count > 0;
         }
 
         private void btnREMOVE_Click(object sender, RoutedEventArgs e)
         {
             //Remove from the list
             Puzzle.Remove(lbClues.SelectedItem as PuzzleWord);
+
+            mnuSave.IsEnabled = lbClues.Items.Count > 0;
         }
 
         private void btnDrawGrid_Click(object sender, RoutedEventArgs e)
         {
             //Empty the grid
-            Puzzle.ClearGrid();
+            Puzzle.ClearGrid(true);
 
-            Puzzle.DrawPuzzle();
+            Puzzle.DrawPuzzle(true);
+
+            Puzzle.TheGrid.IsEnabled = false;
 
             if (Puzzle.InvalidWords.Count() > 0)
             {
                 MessageBox.Show("Some words weren't drawn because they were invalid");
             } 
+        }
+
+        private void lbClues_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var valid = lbClues.SelectedIndex > -1;
+            btnEDIT.IsEnabled = valid;
+            btnREMOVE.IsEnabled = valid;
         }
         #endregion
 
@@ -178,7 +201,7 @@ namespace Crossword
 
                 spMain.Children.Add(Puzzle.TheGrid);
 
-                Puzzle.DrawPuzzle();
+                Puzzle.DrawPuzzle(false);
 
                 if (Puzzle.InvalidWords.Count() > 0)
                 {
@@ -217,7 +240,12 @@ namespace Crossword
                 solved = item.CheckLetter() && solved;
             }
 
-            if (!solved)
+            if (solved)
+            {
+                var pop = new Winner();
+                pop.ShowDialog();
+            }
+            else
             {
                 Puzzle.TheGrid.Background = new SolidColorBrush(Colors.Red);
             }

@@ -150,6 +150,45 @@ namespace Crossword
             ControlPresent = new bool[Columns, Rows];
 
             TheGrid.ShowGridLines = gridLines;
+
+            if (gridLines)
+            {
+                AddLabels();
+            }
+        }
+
+        public void AddLabels()
+        {
+            if (TheGrid == null)
+            {
+                return;
+            }
+
+            //Put a label into the first row
+            for (int i = 0; i < Columns; i++)
+            {
+                var lab = new Label();
+                lab.Content = i;
+                lab.Foreground = new SolidColorBrush(Colors.Gray);
+
+                Grid.SetColumn(lab, i);
+                Grid.SetRow(lab, 0);
+
+                TheGrid.Children.Add(lab);
+            }
+
+            //Put a label into the first column
+            for (int i = 1; i < Rows; i++)
+            {
+                var lab = new Label();
+                lab.Content = i;
+                lab.Foreground = new SolidColorBrush(Colors.Gray);
+
+                Grid.SetColumn(lab, 0);
+                Grid.SetRow(lab, i);
+
+                TheGrid.Children.Add(lab);
+            }
         }
 
         public void ResizeGrid(int newColumn, int newRow, int newSize, bool gridLines = false)
@@ -160,17 +199,17 @@ namespace Crossword
             CreateGrid(newSize, gridLines);
         }
 
-        public void DrawPuzzle()
+        public void DrawPuzzle(bool letterVisible)
         {
             InvalidWords = new List<PuzzleWord>();
 
             foreach (PuzzleWord word in Words)
             {
-                DrawPuzzleWord(word);
+                DrawPuzzleWord(word, letterVisible);
             }
         }
 
-        public void DrawPuzzleWord(PuzzleWord word)
+        public void DrawPuzzleWord(PuzzleWord word, bool letterVisible)
         {
             int startCol = word.StartColumn;
             int startRow = word.StartRow;
@@ -185,7 +224,7 @@ namespace Crossword
                 //foreach character in the word
                 foreach (char letter in word.GetLetters())
                 {
-                    DrawLetterBox(word, startCol, startRow, letter);
+                    DrawLetterBox(word, startCol, startRow, letter, letterVisible);
 
                     //move in the direction
                     startCol += directionCol;
@@ -214,7 +253,8 @@ namespace Crossword
                 if (ControlPresent[currentCol, currentRow])
                 {
                     //Check expected letter if the textbox does exist
-                    PuzzleLetter theBox = TheGrid.Children.Cast<PuzzleLetter>().Where(k => (Grid.GetRow(k) == currentRow) && (Grid.GetColumn(k) == currentCol)).FirstOrDefault();
+                    var theBoxList = TheGrid.Children.Cast<UIElement>().Where(k => (Grid.GetRow(k) == currentRow) && (Grid.GetColumn(k) == currentCol)).ToList();
+                    var theBox = theBoxList[theBoxList.Count - 1] as PuzzleLetter; //Some grid boxes contain labels as well as textboxes. The textboxes are always added last
 
                     //Check that the expected letter in the textbox is equal to the expected letter we were trying to add
                     //If they aren't then the puzzle isn't valid and shouldn't be loaded
@@ -228,7 +268,7 @@ namespace Crossword
             return true;
         }
 
-        private void DrawLetterBox(PuzzleWord word, int startCol, int startRow, char letter)
+        private void DrawLetterBox(PuzzleWord word, int startCol, int startRow, char letter, bool letterVisible)
         {
             //Check the textbox doesn't exist
             if (ControlPresent[startCol, startRow])
@@ -237,14 +277,14 @@ namespace Crossword
             }
             else
             {
-                PuzzleLetter box = CreateNewBox(word, startCol, startRow, letter);
+                PuzzleLetter box = CreateNewBox(word, startCol, startRow, letter, letterVisible);
 
                 TheGrid.Children.Add(box);
                 ControlPresent[startCol, startRow] = true;
             }
         }
 
-        private static PuzzleLetter CreateNewBox(PuzzleWord word, int startCol, int startRow, char letter)
+        private static PuzzleLetter CreateNewBox(PuzzleWord word, int startCol, int startRow, char letter, bool letterVisible)
         {
             string cornerNumber = "";
             if ((startCol == word.StartColumn) && (startRow == word.StartRow))
@@ -253,6 +293,10 @@ namespace Crossword
             }
             //Create textbox because it doesn't already exist
             PuzzleLetter box = new PuzzleLetter(letter, cornerNumber);
+            if (letterVisible)
+            {
+                box.Text = box.ExpectedLetter.ToString();
+            }
 
             //determine the starting position
             Grid.SetColumn(box, startCol);
@@ -263,7 +307,8 @@ namespace Crossword
         private void EditExistingBox(PuzzleWord word, int startCol, int startRow)
         {
             //Don't need to check if the expected letters are the same because we already checked them
-            PuzzleLetter theBox = TheGrid.Children.Cast<PuzzleLetter>().Where(i => (Grid.GetRow(i) == startRow) && (Grid.GetColumn(i) == startCol)).FirstOrDefault();
+            var theBoxList = TheGrid.Children.Cast<UIElement>().Where(k => (Grid.GetRow(k) == startRow) && (Grid.GetColumn(k) == startCol)).ToList();
+            PuzzleLetter theBox = theBoxList[theBoxList.Count - 1] as PuzzleLetter; //Some grid boxes contain labels as well as textboxes. The textboxes are always added last
 
             if ((HeaderTemp.GetDefaultNumber(theBox) == "") && ((startCol == word.StartColumn) && (startRow == word.StartRow)))
             {
@@ -271,11 +316,16 @@ namespace Crossword
             }
         }
 
-        public void ClearGrid()
+        public void ClearGrid(bool gridLines = false)
         {
             TheGrid.Children.Clear();
             ControlPresent = new bool[Columns, Rows];
             InvalidWords?.Clear();
+
+            if (gridLines)
+            {
+                AddLabels();
+            }
         }
     }
 
@@ -370,13 +420,13 @@ namespace Crossword
             return new PuzzleWord(Word, ClueNumber, Clue, WordDirection.ToString(), StartColumn, StartRow);
         }
 
-        public void Populate(PuzzleWord values)
+        public void PopulateFrom(PuzzleWord source)
         {
-            ClueNumber = values.ClueNumber;
-            Clue = values.Clue;
-            WordDirection = values.WordDirection;
-            StartColumn = values.StartColumn;
-            StartRow = values.StartRow;
+            ClueNumber = source.ClueNumber;
+            Clue = source.Clue;
+            WordDirection = source.WordDirection;
+            StartColumn = source.StartColumn;
+            StartRow = source.StartRow;
         }
     }
 

@@ -6,9 +6,9 @@
         xmlns:local="clr-namespace:Crossword.PopupWindows"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="Add Word" SizeToContent="WidthAndHeight">
+        Title="Add Word" Width="278" Height="240" SizeToContent="WidthAndHeight" KeyDown="winAdd_KeyDown">
     <Grid>
-        <StackPanel>
+        <StackPanel Margin="5">
             <StackPanel Orientation="Horizontal">
                 <StackPanel Orientation="Vertical" Width="70">
                     <TextBlock Text="Word"/>
@@ -38,7 +38,7 @@
  
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="Clue" Margin="0,0,47,0"/>
-                <TextBox Name="tbxClue" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" Width="200"/>
+                <TextBox Name="tbxClue" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" Width="185" Margin="0,0,5,0"/>
             </StackPanel>
             <Button Name="btnSave" Content="SAVE" Click="btnSave_Click" Padding="5" Margin="5"/>
         </StackPanel>

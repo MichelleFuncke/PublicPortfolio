@@ -41,9 +41,11 @@ namespace Crossword.PopupWindows
             Window mainWindow = curApp.MainWindow;
             this.Left = mainWindow.Left + (mainWindow.Width - this.Width) / 2;
             this.Top = mainWindow.Top + (mainWindow.Height - this.Height) / 2;
+
+            tbxWord.Focus();
         }
 
-        private void btnSave_Click(object sender, RoutedEventArgs e)
+        private void Save()
         {
             if (tbxWord.Text.Length > 0)
             {
@@ -53,6 +55,19 @@ namespace Crossword.PopupWindows
 
                 this.DialogResult = true;
                 this.Close();
+            }
+        }
+
+        private void btnSave_Click(object sender, RoutedEventArgs e)
+        {
+            Save();
+        }
+
+        private void winAdd_KeyDown(object sender, KeyEventArgs e)
+        {
+            if ((e.Key == Key.Return))
+            {
+                Save();
             }
         }
     }

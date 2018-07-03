@@ -44,10 +44,23 @@ namespace Crossword.PopupWindows
             this.Top = mainWindow.Top + (mainWindow.Height - this.Height) / 2;
         }
 
-        private void btnSave_Click(object sender, RoutedEventArgs e)
+        private void Save()
         {
             this.DialogResult = true;
             this.Close();
+        }
+
+        private void btnSave_Click(object sender, RoutedEventArgs e)
+        {
+            Save();
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if ((e.Key == Key.Return))
+            {
+                Save();
+            }
         }
     }
 }

@@ -11,12 +11,12 @@
         <Menu HorizontalAlignment="Left" Height="21" VerticalAlignment="Top">
             <MenuItem x:Name="mnuLoad" Header="Load from File" Click="mnuLoad_Click"/>
             <MenuItem x:Name="mnuCreate" Header="Create Puzzle" Click="mnuCreate_Click"/>
-            <MenuItem Name="mnuSave" Header="Save Puzzle" Click="mnuSave_Click"/>
+            <MenuItem Name="mnuSave" Header="Save Puzzle" Click="mnuSave_Click" IsEnabled="False"/>
         </Menu>
         <TabControl Name="tabWindow">
             <TabItem Name="tbiMainPage" Header="Main Page">
                 <Grid Background="#FFE5E5E5">
-                    <TextBlock Text="HI THERE!!! Welcome to the wonderful world of crossword puzzles"/>
+                    <Image Source="Pictures/CrossWord.PNG" Width="300" />
                 </Grid>
             </TabItem>
             <TabItem Name="tbiSolvePuzzle" Header="Solve">
@@ -52,7 +52,7 @@
                         </StackPanel>
                         <StackPanel Name="spMakePuzzle">
                             <TextBlock Text="Clues"/>
-                            <ListBox Name="lbClues">
+                            <ListBox Name="lbClues" MinHeight="28" SelectionChanged="lbClues_SelectionChanged">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
@@ -65,8 +65,8 @@
                             </ListBox>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <Button Name="btnADD" Content="ADD" Padding="5" Margin="5" Click="btnADD_Click"/>
-                                <Button Name="btnEDIT" Content="EDIT" Padding="5" Margin="5" Click="btnEDIT_Click"/>
-                                <Button Name="btnREMOVE" Content="REMOVE" Padding="5" Margin="5" Click="btnREMOVE_Click"/>
+                                <Button Name="btnEDIT" Content="EDIT" Padding="5" Margin="5" Click="btnEDIT_Click" IsEnabled="False"/>
+                                <Button Name="btnREMOVE" Content="REMOVE" Padding="5" Margin="5" Click="btnREMOVE_Click" IsEnabled="False"/>
                             </StackPanel>
                             <Button Name="btnDrawGrid" Content="DRAW PUZZLE" Padding="5" Margin="5" Click="btnDrawGrid_Click"/>
                             <!--grid-->
