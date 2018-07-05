@@ -36,6 +36,8 @@ namespace Crossword
             {
                 item.Visibility = Visibility.Collapsed;
             }
+
+            WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
         }
 
         #region Ready puzzles
@@ -154,6 +156,7 @@ namespace Crossword
         {
             //Empty the grid
             Puzzle.ClearGrid(true);
+            lbClues.SelectedIndex = -1;
 
             Puzzle.DrawPuzzle(true);
 

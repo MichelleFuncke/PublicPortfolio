@@ -205,6 +205,7 @@ namespace Crossword
 
             foreach (PuzzleWord word in Words)
             {
+                word.IsValid = true;
                 DrawPuzzleWord(word, letterVisible);
             }
         }
@@ -230,11 +231,14 @@ namespace Crossword
                     startCol += directionCol;
                     startRow += directionRow;
                 }
+
+                word.IsValid = true;
             }
             else
             {
                 //Throw a warning for this invalid word
                 InvalidWords.Add(word);
+                word.IsValid = false;
             }
         }
 
@@ -336,6 +340,7 @@ namespace Crossword
         private int _startC;
         private int _startR;
         private Direction _direction;
+        private bool _isValid;
 
         public String Word { get; private set; }
         public int Length { get; private set; }
@@ -387,6 +392,15 @@ namespace Crossword
                 OnPropertyChanged("StartRow");
             }
         }
+        public bool IsValid
+        {
+            get { return _isValid; }
+            set
+            {
+                _isValid = value;
+                OnPropertyChanged("IsValid");
+            }
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(string propertyName)
@@ -405,6 +419,8 @@ namespace Crossword
             WordDirection = (Direction)Enum.Parse(typeof(Direction), direction.ToLower());
             StartColumn = startC;
             StartRow = startR;
+
+            IsValid = true;
         }
 
         public IEnumerable<char> GetLetters()
