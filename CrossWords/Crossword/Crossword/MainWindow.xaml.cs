@@ -83,6 +83,22 @@ namespace Crossword
         #endregion
 
         #region Create puzzle
+        private void ReDrawGrid()
+        {
+            //Empty the grid
+            Puzzle.ClearGrid(true);
+            lbClues.SelectedIndex = -1;
+
+            Puzzle.DrawPuzzle(true);
+
+            Puzzle.TheGrid.IsEnabled = false;
+
+            if (Puzzle.InvalidWords.Count() > 0)
+            {
+                MessageBox.Show("Some words weren't drawn because they were invalid");
+            }
+        }
+
         private void mnuCreate_Click(object sender, RoutedEventArgs e)
         {
             tabWindow.SelectedItem = tbiCreatePuzzle;
@@ -92,7 +108,7 @@ namespace Crossword
                 //Can't just remove Puzzle.TheGrid because it might be a new instance
 
                 //Find the location of the button just before the grid
-                var buttonIndex = spMakePuzzle.Children.IndexOf(btnDrawGrid);
+                var buttonIndex = spMakePuzzle.Children.IndexOf(spButtons);
                 //Remove everything after this button
                 spMakePuzzle.Children.RemoveRange(buttonIndex + 1, 4);
             }
@@ -115,6 +131,8 @@ namespace Crossword
             Puzzle.ResizeGrid(col, row, 40, true);
 
             spMakePuzzle.Children.Add(Puzzle.TheGrid);
+
+            ReDrawGrid();
         }
 
         private void btnADD_Click(object sender, RoutedEventArgs e)
@@ -128,6 +146,8 @@ namespace Crossword
             }
 
             mnuSave.IsEnabled = lbClues.Items.Count > 0;
+
+            ReDrawGrid();
         }
 
         private void btnEDIT_Click(object sender, RoutedEventArgs e)
@@ -142,6 +162,8 @@ namespace Crossword
             }
 
             mnuSave.IsEnabled = lbClues.Items.Count > 0;
+
+            ReDrawGrid();
         }
 
         private void btnREMOVE_Click(object sender, RoutedEventArgs e)
@@ -150,22 +172,8 @@ namespace Crossword
             Puzzle.Remove(lbClues.SelectedItem as PuzzleWord);
 
             mnuSave.IsEnabled = lbClues.Items.Count > 0;
-        }
 
-        private void btnDrawGrid_Click(object sender, RoutedEventArgs e)
-        {
-            //Empty the grid
-            Puzzle.ClearGrid(true);
-            lbClues.SelectedIndex = -1;
-
-            Puzzle.DrawPuzzle(true);
-
-            Puzzle.TheGrid.IsEnabled = false;
-
-            if (Puzzle.InvalidWords.Count() > 0)
-            {
-                MessageBox.Show("Some words weren't drawn because they were invalid");
-            } 
+            ReDrawGrid();
         }
 
         private void lbClues_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -173,6 +181,22 @@ namespace Crossword
             var valid = lbClues.SelectedIndex > -1;
             btnEDIT.IsEnabled = valid;
             btnREMOVE.IsEnabled = valid;
+        }
+
+        private void lbClues_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            //Edit an existing clue
+            var word = lbClues.SelectedItem as PuzzleWord;
+            var Pop = new EditWindow(word, (int)udColumn.Value, (int)udRow.Value);
+            Pop.Owner = this;
+            if ((bool)Pop.ShowDialog())
+            {
+                word.PopulateFrom(Pop.Word);
+            }
+
+            mnuSave.IsEnabled = lbClues.Items.Count > 0;
+
+            ReDrawGrid();
         }
         #endregion
 
