@@ -15,6 +15,8 @@ List of projects:
 A C# desktop application I created for Derivco. This tool allowed an Empirical tester to easily connect to a database to check:
  - the number of strategies a game needed to be tested on
  - the amount of hours needed to perform this testing
+ 
+![](Empiric%20Grimoire/EG%20-%20Main%20Page.png)
 
 Notable programming components/strategies:
  - Test Driven Development (TDD)
@@ -70,6 +72,8 @@ This project was created to showcase my C# skills:
  - Object-Orientated Programming
  - Testcases (TDD)
  - GUI data binding (pseudo-MVVM)
+ 
+![](TicTacToe/Tictactoe_winner.png)
 
  ## CrossWord
 This project was created to showcase my C# skills:
@@ -77,3 +81,5 @@ This project was created to showcase my C# skills:
  - XML handling
  - Object-Orientated Programming
  - GUI data binding (pseudo-MVVM)
+
+![](CrossWords/MainPage.png)
