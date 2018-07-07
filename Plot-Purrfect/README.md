@@ -12,6 +12,8 @@ A C# desktop application I created for Derivco. This tool allowed users to forma
  - Reformatted Headers
  - Calculated averages
  - Created graphs which required little to no further editing by users
+ 
+![](Images/Current%20version/Main_Page.png)
 
 This tool was later developed to manipulate Visual Studio and Mobile (IOS and Android) performance data.
  
