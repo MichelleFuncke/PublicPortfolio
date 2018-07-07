@@ -25,3 +25,6 @@ Contained in this project:
  - C#_EmpiricGrimoire_3.0 (User Guide)
  - EmpiricGrimoire.avi (Video)
  - Pictures of: Help window, Main Page, Menu options
+
+![](EG%20-%20Main%20Page.PNG)
+![](EG%20-%20Help%20window.PNG)
