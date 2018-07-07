@@ -16,7 +16,7 @@ A C# desktop application I created for Derivco. This tool allowed an Empirical t
  - the number of strategies a game needed to be tested on
  - the amount of hours needed to perform this testing
  
-![](Empiric%20Grimoire/EG%20-%20Main%20Page.png)
+![](Empiric%20Grimoire/EG%20-%20Main%20Page.PNG)
 
 Notable programming components/strategies:
  - Test Driven Development (TDD)
@@ -73,7 +73,7 @@ This project was created to showcase my C# skills:
  - Testcases (TDD)
  - GUI data binding (pseudo-MVVM)
  
-![](TicTacToe/Tictactoe_winner.png)
+![](TicTacToe/Tictactoe_winner.PNG)
 
  ## CrossWord
 This project was created to showcase my C# skills:
@@ -82,4 +82,4 @@ This project was created to showcase my C# skills:
  - Object-Orientated Programming
  - GUI data binding (pseudo-MVVM)
 
-![](CrossWords/MainPage.png)
+![](CrossWords/MainPage.PNG)
