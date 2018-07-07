@@ -1,0 +1,98 @@
+﻿<Window x:Name="winCrossWordWindow" x:Class="Crossword.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Crossword"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        mc:Ignorable="d"
+        Title="Cross Word Puzzles" Height="450" Width="800" SizeToContent="WidthAndHeight">
+    <StackPanel Name="spMainPage">
+        <Menu HorizontalAlignment="Left" Height="21" VerticalAlignment="Top">
+            <MenuItem x:Name="mnuLoad" Header="Load from File" Click="mnuLoad_Click"/>
+            <MenuItem x:Name="mnuCreate" Header="Create Puzzle" Click="mnuCreate_Click"/>
+            <MenuItem Name="mnuSave" Header="Save Puzzle" Click="mnuSave_Click" IsEnabled="False"/>
+        </Menu>
+        <TabControl Name="tabWindow">
+            <TabItem Name="tbiMainPage" Header="Main Page">
+                <Grid Background="#FFE5E5E5">
+                    <Image Source="Pictures/CrossWord.PNG" Width="300" />
+                </Grid>
+            </TabItem>
+            <TabItem Name="tbiSolvePuzzle" Header="Solve">
+                <StackPanel Name="spMain">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Button Name="btnReset" Content="RESET" Padding="5" Margin="5" Click="btnReset_Click"/>
+                        <Button Name="btnCheck" Content="CHECK" Padding="5" Margin="5" Click="btnCheck_Click"/>
+                    </StackPanel>
+                    <TextBlock Text="Clues"/>
+                    <ListBox Name="lbClues2">
+                        <ListBox.Resources>
+                            <Style TargetType="ListBoxItem">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsValid}" Value="False">
+                                        <Setter Property="Background" Value="Red"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ListBox.Resources>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Path=WordDirection}" Width="95"/>
+                                    <TextBlock Text="{Binding Path=ClueNumber}" Width="95"/>
+                                    <TextBlock Text="{Binding Path=Clue}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+            </TabItem>
+            <TabItem Name="tbiCreatePuzzle" Header="Create">
+                <Grid Background="#FFE5E5E5">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Grid Size:" Padding="10"/>
+                            <TextBlock Text="Column:" Padding="5" VerticalAlignment="Center"/>
+                            <xctk:IntegerUpDown x:Name="udColumn" Height="28" Width="75" FormatString="N0" Value="10" Increment="1" Maximum="30" Minimum="1"/>
+                            <TextBlock Text="Row:" Padding="5" VerticalAlignment="Center"/>
+                            <xctk:IntegerUpDown x:Name="udRow" Height="28" Width="75" FormatString="N0" Value="10" Increment="1" Maximum="30" Minimum="1"/>
+                            <Button Name="btnResize" Content="RESIZE GRID" Margin="5" Padding="5" Click="btnResize_Click"/>
+                        </StackPanel>
+                        <StackPanel Name="spMakePuzzle">
+                            <TextBlock Text="Clues"/>
+                            <ListBox Name="lbClues" MinHeight="28" SelectionChanged="lbClues_SelectionChanged" MouseDoubleClick="lbClues_MouseDoubleClick">
+                                <ListBox.Resources>
+                                    <Style TargetType="ListBoxItem">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsValid}" Value="False">
+                                                <Setter Property="Background" Value="Red"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ListBox.Resources>
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Path=WordDirection}" Width="95"/>
+                                            <TextBlock Text="{Binding Path=ClueNumber}" Width="95"/>
+                                            <TextBlock Text="{Binding Path=Word}" Width="95"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                            <StackPanel Name="spButtons" Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Button Name="btnADD" Content="ADD" Padding="5" Margin="5" Click="btnADD_Click"/>
+                                <Button Name="btnEDIT" Content="EDIT" Padding="5" Margin="5" Click="btnEDIT_Click" IsEnabled="False"/>
+                                <Button Name="btnREMOVE" Content="REMOVE" Padding="5" Margin="5" Click="btnREMOVE_Click" IsEnabled="False"/>
+                            </StackPanel>
+                            <!--grid-->
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+        </TabControl>
+        <!--local:PuzzleLetter Height="50" Width="50" TextWrapping="Wrap" Text="A" Background="Red" Foreground="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="24"
+                 local:HeaderTemp.DefaultNumber="2"/-->
+    </StackPanel>
+</Window>

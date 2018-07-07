@@ -1,0 +1,46 @@
+﻿<Window x:Name="winAdd" x:Class="Crossword.PopupWindows.AddWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Crossword.PopupWindows"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        mc:Ignorable="d"
+        Title="Add Word" Width="278" Height="240" SizeToContent="WidthAndHeight" KeyDown="winAdd_KeyDown">
+    <Grid>
+        <StackPanel Margin="5">
+            <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Vertical" Width="70">
+                    <TextBlock Text="Word"/>
+                    <TextBlock Text="Number"/>
+                    <TextBlock Text="Direction"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Vertical" Width="80">
+                    <TextBox Name="tbxWord" CharacterCasing="Upper"/>
+                    <TextBox Name="tbxNumber" Text="1"/>
+                    <ComboBox Name="cboDirections"/>
+                </StackPanel>
+            </StackPanel>
+            
+            <TextBlock Text="Location:" VerticalAlignment="Center"/>
+
+            <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Vertical" Width="70">
+                    <TextBlock Text="Column:"/>
+                    <TextBlock Text="Row:"/>
+                </StackPanel>
+                <StackPanel Orientation="Vertical">
+                    <xctk:IntegerUpDown x:Name="udColumn" Height="28" Width="80" FormatString="N0" Value="0" Increment="1" Maximum="30" Minimum="0"/>
+                    <xctk:IntegerUpDown x:Name="udRow" Height="28" Width="80" FormatString="N0" Value="0" Increment="1" Maximum="30" Minimum="0"/>
+                </StackPanel>
+            </StackPanel>
+ 
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Clue" Margin="0,0,47,0"/>
+                <TextBox Name="tbxClue" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" Width="185" Margin="0,0,5,0"/>
+            </StackPanel>
+            <Button Name="btnSave" Content="SAVE" Click="btnSave_Click" Padding="5" Margin="5"/>
+        </StackPanel>
+    </Grid>
+</Window>

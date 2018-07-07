@@ -1,0 +1,12 @@
+﻿<Window x:Name="winWinner" x:Class="Crossword.PopupWindows.Winner"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Crossword.PopupWindows"
+        mc:Ignorable="d"
+        Title="Winner" SizeToContent="WidthAndHeight" Width="258" Height="187" >
+    <Grid>
+        <Image Source="/Crossword;component/Pictures/Solved.jpg" Width="250"/>
+    </Grid>
+</Window>

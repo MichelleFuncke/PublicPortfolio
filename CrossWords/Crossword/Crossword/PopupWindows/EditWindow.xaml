@@ -1,0 +1,46 @@
+﻿<Window x:Class="Crossword.PopupWindows.EditWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Crossword.PopupWindows"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        mc:Ignorable="d"
+        Title="EditWindow" Width="278" Height="240" SizeToContent="WidthAndHeight" KeyDown="Window_KeyDown">
+    <Grid>
+        <StackPanel Margin="5">
+            <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Vertical" Width="70">
+                    <TextBlock Text="Word"/>
+                    <TextBlock Text="Number"/>
+                    <TextBlock Text="Direction"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Vertical" Width="80">
+                    <TextBox Name="tbxWord" CharacterCasing="Upper" IsEnabled="False" Text="{Binding Word, Mode=OneWay}"/>
+                    <TextBox Name="tbxNumber" Text="{Binding ClueNumber, UpdateSourceTrigger=PropertyChanged}"/>
+                    <ComboBox Name="cboDirections" SelectedValue="{Binding WordDirection, UpdateSourceTrigger=PropertyChanged}"/>
+                </StackPanel>
+            </StackPanel>
+
+            <TextBlock Text="Location:" VerticalAlignment="Center"/>
+
+            <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Vertical" Width="70">
+                    <TextBlock Text="Column:"/>
+                    <TextBlock Text="Row:"/>
+                </StackPanel>
+                <StackPanel Orientation="Vertical">
+                    <xctk:IntegerUpDown x:Name="udColumn" Height="28" Width="80" FormatString="N0" Value="{Binding StartColumn, UpdateSourceTrigger=PropertyChanged}" Increment="1" Maximum="30" Minimum="0"/>
+                    <xctk:IntegerUpDown x:Name="udRow" Height="28" Width="80" FormatString="N0" Value="{Binding StartRow, UpdateSourceTrigger=PropertyChanged}" Increment="1" Maximum="30" Minimum="0"/>
+                </StackPanel>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Clue" Margin="0,0,47,0"/>
+                <TextBox Name="tbxClue" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" Width="185" Margin="0,0,5,0" Text="{Binding Clue, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+            <Button Name="btnSave" Content="SAVE" Padding="5" Margin="5" Click="btnSave_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>
