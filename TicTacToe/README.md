@@ -18,3 +18,6 @@ The game application has the ability to:
  - Play through a tic tac toe game which ends in a [win](Tictactoe_winner.PNG)
  - Play through a tic tac toe game which ends in a [draw](Tictactoe_draw.PNG)
  - [Clear](Tictactoe_blank.PNG) the board to begin a new game
+
+![](Tictactoe_winner.PNG)
+![](Tictactoe_markersPlaced.PNG)
