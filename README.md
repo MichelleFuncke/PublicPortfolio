@@ -9,6 +9,7 @@ List of projects:
  - Python
  - [Masters Project](Masters%20Project/README.md)
  - [TicTacToe](TicTacToe/README.md)
+ - [CrossWord](CrossWords/README.md)
 
 ## Empiric Grimoire
 A C# desktop application I created for Derivco. This tool allowed an Empirical tester to easily connect to a database to check:
@@ -32,6 +33,8 @@ A C# desktop application I created for Derivco. This tool allowed users to forma
  - Calculated averages
  - Created graphs which required little to no further editing by users
 
+![](Plot-Purrfect/Images/Current%20version/Main_Page.png)
+ 
 This tool was later developed to manipulate Visual Studio and Mobile (IOS and Android) performance data.
  
  Notable programming components/strategies:
@@ -66,4 +69,11 @@ This project was created to showcase my C# skills:
  - WPF
  - Object-Orientated Programming
  - Testcases (TDD)
+ - GUI data binding (pseudo-MVVM)
+
+ ## CrossWord
+This project was created to showcase my C# skills:
+ - WPF
+ - XML handling
+ - Object-Orientated Programming
  - GUI data binding (pseudo-MVVM)
